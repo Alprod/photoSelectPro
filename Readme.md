@@ -8,16 +8,17 @@ App Web de selection de photo en plusieurs étapes, en Binôme en groupe de Thé
 
 ## Pour commencer
 
-### Prérequis
+### Prérequis (au moment de la création du projet)
 
 - Git 2.38.1
 - PHP 8.2.12
 - XDebug 3.2.0
 - Composer 2.3.3
-- Symfony cli  5.6.2
+- Symfony cli 5.6.2
 - Symfony 6.3.7
 - npm 10.2.0
 - node 21.1.0
+- GNU Make 3.81
 
 ## Installation
 
@@ -25,12 +26,18 @@ N'oubliez pas de dupliquer le fichier ``.env`` en ``.env.local`` afin d'y introd
 Faite en sorte que toutes les variables d'environnement soient disponibles.
 
 Seule la variable env ``DATABASE_URL`` sera à mettre à jour,
-A vous de faire votre choix :
+À vous de faire votre choix :
 - Mysql
 - PostGresQl
 - MariaDb
 
 Une fois que c'est fait
+
+Vous avez le choix de suivre l'initialisation du ``readme`` ou sinon d'utiliser le ``makefile``  
+
+En faisant les commandes du ``makefile``  vous pourrez retrouver toutes les phases d'intallation :  
+
+Avec ``make help`` retrouver la liste des commandes utiles.  
 
 installer vendor `composer install`  
 installer node `npm install`
@@ -49,6 +56,11 @@ Installer votre BDD, la création de votre base ainsi que la migration des table
     `symfony console doctrine:migration:migrate`  
 
 
+- Création de fausse donnés:  
+    `php bin/console doctrine:fixtures:load`  
+    `symfony console doctrine:fixtures:load`  
+
+
 - Une fois le tout installé.
   - Server Symfony :  
     `symfony serve -d`   
@@ -58,7 +70,7 @@ Installer votre BDD, la création de votre base ainsi que la migration des table
       `npm run watch`
   - Conteneur Docker :  
         `docker-compose up --build`  
-        Attention Les conteneurs sont PostgreQl et PGAdmin 4
+        Attention Les conteneurs sont PostgreQl, PGAdmin 4 et d'une boite mail de test
   
 
 
