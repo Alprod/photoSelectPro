@@ -80,8 +80,16 @@ Afin d'y ajouter vos propres contraintes de code.
 Avec la commande, vous pouvez executer le script :  
 ``vendor/bin/phpstan analyse src tests``  
 
-Mais vous pouvez aussi la retrounver dans le makefile
+Mais vous pouvez aussi la retrounver dans le ``makefile``
 
+[Php-cd-fixer](https://cs.symfony.com/) - Clean et Ré-indente le code  
+Pour l'instalation de php-cs-fixer, créer un dossier ``php-cs-fixer`` à la racine du projet.  
+Executer la commande : `composer require --working-dir=php-cs-fixer friendsofphp/php-cs-fixer`
+
+Avec la commande, vous pouvez executer le script :
+``php-cs-fixer/vandor/bin/php-cs-fixer fix src``  
+
+Là aussi, vous pouvez retrouver la commande dans le ``makefile``
 
 
 ## Fabriquer avec

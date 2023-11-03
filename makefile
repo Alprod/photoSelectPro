@@ -7,13 +7,14 @@ COMPOSER=composer
 PHPUNIT=php bin/phpunit
 NPM=npm
 PHPSTAN_ANALYSE=vendor/bin/phpstan analyse
+PHPCSFIXER=php-cs-fixer/vendor/bin/php-cs-fixer
 
 ## --- Init ------------------------------------------------------------------------------
 
 ## Initialisation du projet une fois cloner
 init: vendor-i npm-i start ddc dmm
 
-## --- Docker ------------------------------------------------------------------------------
+## --- Docker ----------------------------------------------------------------------------
 
 ## Lancer les containers
 start:
@@ -34,7 +35,7 @@ restart: rm start
 docker-ps:
 	$(DOCKER_COMPOSE) ps
 
-## --- Symfony ------------------------------------------------------------------------------
+## --- Symfony ----------------------------------------------------------------------------
 
 ## Installation de vendor
 vendor-i:
@@ -103,7 +104,7 @@ test-app:
 tests:
 	$(PHPUNIT) --testsuite All
 
-## —— NPM ------------------------------------------------------------------------------
+## —— NPM --------------------------------------------------------------------------------
 
 ## Installation du node modules
 npm-i:
@@ -119,7 +120,7 @@ clean-node:
 	rm rm package-lock.json
 	$(NPM) install
 
-## —— PhpStan ------------------------------------------------------------------------------
+## —— PhpStan -----------------------------------------------------------------------------
 
 ## Analyser le ficher src
 stan-src:
@@ -129,9 +130,19 @@ stan-src:
 stan-test:
 	$(PHPSTAN_ANALYSE) tests
 
+## Analyser les fichers src et tests
 stan-all:
 	$(PHPSTAN_ANALYSE) src tests
 
+## —— Php-cs-fixer ------------------------------------------------------------------------
+
+## Clean les fichiers du dossier src
+cs-src:
+	$(PHPCSFIXER) fix src
+
+## Clean les fichiers du dossier tests
+cs-test:
+	$(PHPCSFIXER) fix tests
 ## —— Others️ ------------------------------------------------------------------------------
 
 ## Liste des commandes
