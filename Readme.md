@@ -72,6 +72,16 @@ Installer votre BDD, la création de votre base ainsi que la migration des table
         `docker-compose up --build`  
         Attention Les conteneurs sont PostgreQl, PGAdmin 4 et d'une boite mail de test
   
+## Outils
+[PHPStan](https://phpstan.org/) - Analyseur de code  
+PhpStan est installé dans le projet, prennez le temps de le configuré en copient le fichier ``phpstan.dist.neon`` en ``phpstan.neon``  
+Afin d'y ajouter vos propres contraintes de code.  
+
+Avec la commande, vous pouvez executer le script :  
+``vendor/bin/phpstan analyse src tests``  
+
+Mais vous pouvez aussi la retrounver dans le makefile
+
 
 
 ## Fabriquer avec
