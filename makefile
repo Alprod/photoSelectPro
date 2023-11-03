@@ -6,6 +6,7 @@ SYMFONY_CONSOLE=symfony console
 COMPOSER=composer
 PHPUNIT=php bin/phpunit
 NPM=npm
+PHPSTAN_ANALYSE=vendor/bin/phpstan analyse
 
 ## --- Init ------------------------------------------------------------------------------
 
@@ -117,6 +118,19 @@ clean-node:
 	rm -Rf node_modules
 	rm rm package-lock.json
 	$(NPM) install
+
+## —— PhpStan ------------------------------------------------------------------------------
+
+## Analyser le ficher src
+stan-src:
+	$(PHPSTAN_ANALYSE) src
+
+## Analyser le ficher tests
+stan-test:
+	$(PHPSTAN_ANALYSE) tests
+
+stan-all:
+	$(PHPSTAN_ANALYSE) src tests
 
 ## —— Others️ ------------------------------------------------------------------------------
 
