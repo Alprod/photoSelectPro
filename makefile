@@ -90,7 +90,7 @@ clean-db-test: cc-hard cc-test
 
 ## Lancement des tests Unitaire
 test-unit:
-	$(PHPUNIT) --testsuite Unit
+	$(PHPUNIT) --testsuite Unitaire
 
 ## Lancement des tests Intégration
 test-inte:
