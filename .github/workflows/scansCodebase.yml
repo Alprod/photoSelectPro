@@ -22,7 +22,9 @@ jobs:
 
       - name: Run php-cs-fixer
         uses: docker://oskarstark/php-cs-fixer-ga
-      
+        with:
+          configuration: .php-cs-fixer.php
+
       - name: Run PhpStan
         uses: php-actions/phpstan@v3
         with:
