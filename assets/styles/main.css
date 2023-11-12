@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .h1 {
+        @apply text-5xl iphone:text-6xl xs:text-7xl
+    }
+    .h2 {
+        @apply text-4xl iphone:text-5xl xs:text-6xl fullHD:text-8xl
+    }
+
+    .h3 {
+        @apply text-3xl iphone:text-4xl xs:text-5xl fullHD:text-7xl
+    }
+
+    .h4 {
+        @apply text-2xl iphone:text-3xl xs:text-4xl fullHD:text-6xl
+    }
+
+    .h5 {
+        @apply text-xl iphone:text-2xl xs:text-3xl fullHD:text-5xl
+    }
+
+    .h6 {
+        @apply text-lg iphone:text-xl xs:text-2xl fullHD:text-4xl
+    }
+
+    .fonts-size {
+        @apply text-sm iphone:text-lg xs:text-xl fullHD:text-3xl
+    }
+}
