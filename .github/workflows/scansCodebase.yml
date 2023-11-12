@@ -20,7 +20,7 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-${{ github.repository }}-phpcsfixer-
 
-      - name: Run php-cs-fixer
+      - name: Php-cs-fixer
         uses: docker://oskarstark/php-cs-fixer-ga
         with:
           args: --config=.php-cs-fixer.php --dry-run
