@@ -1,0 +1,53 @@
+/* Font-family pour les balises h1 -> h3 */
+@font-face {
+    font-face-name: 'promptBold';
+    font-family: 'Prompt-Bold';
+    font-weight: 700;
+    src: url("./../../public/fonts/prompt_font_title/Prompt-Bold.ttf");
+}
+
+/* Font-family pour les balises h4 -> h6 */
+@font-face {
+    font-face-name: "promptMedium";
+    font-family: "Prompt-Medium";
+    font-weight: 500;
+    src: url("./../../public/fonts/prompt_font_title/Prompt-Medium.ttf");
+}
+
+/* Font-family du Site */
+@font-face {
+    font-face-name: 'montserratExtraLight';
+    font-family: 'Montserrat-ExtraLigth';
+    font-weight: 200;
+    src: url("./../../public/fonts/montserrat_font_body/Montserrat-ExtraLight.ttf");
+}
+
+/* Font-family Bold du site */
+@font-face {
+    font-face-name: 'montserratMedium';
+    font-family: 'Montserrat-Medium';
+    font-weight: 500;
+    src: url("./../../public/fonts/montserrat_font_body/Montserrat-Medium.ttf");
+}
+
+body {
+    font-family: 'Montserrat-ExtraLigth', sans-serif;
+    font-size: 20px;
+}
+
+.bold, button, a {
+    font-family: 'Montserrat-Medium', sans-serif;
+    font-size: 18px;
+}
+
+
+h1, 
+h2, 
+h3 {
+    font-family: 'Prompt-Bold', sans-serif;
+}
+h4,
+h5,
+h6 {
+    font-family: 'Prompt-Medium', sans-serif;
+}

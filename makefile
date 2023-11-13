@@ -117,7 +117,7 @@ npm-u:
 ## Suppression du répertoire node_modules et réinstallation
 clean-node:
 	rm -Rf node_modules
-	rm rm package-lock.json
+	rm package-lock.json
 	$(NPM) install
 
 ## —— PhpStan -----------------------------------------------------------------------------
@@ -130,7 +130,7 @@ stan-src:
 stan-test:
 	$(PHPSTAN_ANALYSE) tests
 
-## Analyser les fichers src et tests
+## Analyser les fichiers src et tests
 stan-all:
 	$(PHPSTAN_ANALYSE) src tests
 
