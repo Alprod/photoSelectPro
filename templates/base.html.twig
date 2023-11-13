@@ -14,8 +14,12 @@
         {% endblock %}
     </head>
     <body>
+        {% block header %}
+            {% include 'includes/header/_container_header.html.twig' %}
+        {% endblock %}
         <main class="max-w-7xl mx-auto iphone:px-4 xs:px-6">
             {% block body %}{% endblock %}
         </main>
+        {% block footer %}{% endblock %}
     </body>
 </html>
