@@ -4,7 +4,7 @@
 
 @layer components {
     .h1 {
-        @apply text-5xl iphone:text-6xl xs:text-7xl
+        @apply text-5xl iphone:text-6xl xs:text-7xl fullHD:text-9xl
     }
     .h2 {
         @apply text-4xl iphone:text-5xl xs:text-6xl fullHD:text-8xl
