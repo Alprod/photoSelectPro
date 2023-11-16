@@ -3,7 +3,7 @@
 {% block title %}PhotoSelectPRO{% endblock %}
 
 {% block body %}
-<section class="relative bg-white py-2 iphone:py-6 xs:py-4 lg:py-24">
+<section class="relative bg-white py-2 iphone:py-6 xs:py-4 lg:py-14">
     <div class="mx-auto max-w-7xl w-full pt-16 pb-20 text-center lg:py-48 lg:text-left">
         <div class="px-4 lg:w-1/2 sm:px-8 xl:pr-16">
             <h1 class="h4 tracking-tight font-extrabold text-gray-900">
@@ -16,10 +16,16 @@
         </div>
     </div>
     <div class="relative w-full h-64 lg:absolute lg:inset-y-0 lg:right-0 xs:h-72 md:h-96 lg:w-1/2 lg:h-full">
-        <img class="absolute inset-0 w-full h-full xs:h-4/5 object-cover" src="{{ asset('images/binome.jpg') }}" alt="">
+        <img class="absolute inset-0 w-full h-full object-cover" src="{{ asset('images/binome.jpg') }}" alt="">
     </div>
 </section>
-<div class="bg-white">
+
+<div id="wordCloud"
+     class="hidden justify-center flex-wrap max-w-8xl mx-auto align-center gap-8 leading-8 text-gray-300/70 bold py-36
+     lg:flex">
+</div>
+
+<div class="bg-white py-2 iphone:py-6 xs:py-4 lg:py-14">
 	<div class="relative w-full">
 		<div class="relative  py-24 px-8 bg-slate-800 shadow-2xl overflow-hidden lg:px-16 lg:grid lg:grid-cols-2
 		lg:gap-x-8">
