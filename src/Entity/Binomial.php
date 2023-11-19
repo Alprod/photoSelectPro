@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BinomialRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BinomialRepository::class)]
@@ -21,6 +23,14 @@ class Binomial
 
     #[ORM\ManyToOne(inversedBy: 'binomials')]
     private ?Group $groupUser = null;
+
+    #[ORM\OneToMany(mappedBy: 'binomial', targetEntity: BinomialPreSelection::class)]
+    private Collection $binomialPreSelections;
+
+    public function __construct()
+    {
+        $this->binomialPreSelections = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +69,36 @@ class Binomial
     public function setGroupUser(?Group $groupUser): static
     {
         $this->groupUser = $groupUser;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BinomialPreSelection>
+     */
+    public function getBinomialPreSelections(): Collection
+    {
+        return $this->binomialPreSelections;
+    }
+
+    public function addBinomialPreSelection(BinomialPreSelection $binomialPreSelection): static
+    {
+        if (!$this->binomialPreSelections->contains($binomialPreSelection)) {
+            $this->binomialPreSelections->add($binomialPreSelection);
+            $binomialPreSelection->setBinomial($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBinomialPreSelection(BinomialPreSelection $binomialPreSelection): static
+    {
+        if ($this->binomialPreSelections->removeElement($binomialPreSelection)) {
+            // set the owning side to null (unless already changed)
+            if ($binomialPreSelection->getBinomial() === $this) {
+                $binomialPreSelection->setBinomial(null);
+            }
+        }
 
         return $this;
     }
