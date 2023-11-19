@@ -43,10 +43,14 @@ class Client
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: SelectionProcess::class)]
     private Collection $selectionProcesses;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Photo::class)]
+    private Collection $photos;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->selectionProcesses = new ArrayCollection();
+        $this->photos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -192,6 +196,36 @@ class Client
             // set the owning side to null (unless already changed)
             if ($selectionProcess->getClient() === $this) {
                 $selectionProcess->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Photo>
+     */
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
+    }
+
+    public function addPhoto(Photo $photo): static
+    {
+        if (!$this->photos->contains($photo)) {
+            $this->photos->add($photo);
+            $photo->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhoto(Photo $photo): static
+    {
+        if ($this->photos->removeElement($photo)) {
+            // set the owning side to null (unless already changed)
+            if ($photo->getClient() === $this) {
+                $photo->setClient(null);
             }
         }
 
