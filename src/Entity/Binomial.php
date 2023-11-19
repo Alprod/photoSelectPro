@@ -27,9 +27,13 @@ class Binomial
     #[ORM\OneToMany(mappedBy: 'binomial', targetEntity: BinomialPreSelection::class)]
     private Collection $binomialPreSelections;
 
+    #[ORM\OneToMany(mappedBy: 'binomial', targetEntity: BinomialFinalSelection::class)]
+    private Collection $binomialFinalSelections;
+
     public function __construct()
     {
         $this->binomialPreSelections = new ArrayCollection();
+        $this->binomialFinalSelections = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -97,6 +101,36 @@ class Binomial
             // set the owning side to null (unless already changed)
             if ($binomialPreSelection->getBinomial() === $this) {
                 $binomialPreSelection->setBinomial(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BinomialFinalSelection>
+     */
+    public function getBinomialFinalSelections(): Collection
+    {
+        return $this->binomialFinalSelections;
+    }
+
+    public function addBinomialFinalSelection(BinomialFinalSelection $binomialFinalSelection): static
+    {
+        if (!$this->binomialFinalSelections->contains($binomialFinalSelection)) {
+            $this->binomialFinalSelections->add($binomialFinalSelection);
+            $binomialFinalSelection->setBinomial($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBinomialFinalSelection(BinomialFinalSelection $binomialFinalSelection): static
+    {
+        if ($this->binomialFinalSelections->removeElement($binomialFinalSelection)) {
+            // set the owning side to null (unless already changed)
+            if ($binomialFinalSelection->getBinomial() === $this) {
+                $binomialFinalSelection->setBinomial(null);
             }
         }
 
