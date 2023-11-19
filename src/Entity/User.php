@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -37,6 +39,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Client $client = null;
+
+    #[ORM\OneToMany(mappedBy: 'firstUser', targetEntity: Binomial::class)]
+    private Collection $firstBinomials;
+
+    #[ORM\OneToMany(mappedBy: 'secondUser', targetEntity: Binomial::class)]
+    private Collection $secondBinomials;
+
+    public function __construct()
+    {
+        $this->firstBinomials = new ArrayCollection();
+        $this->secondBinomials = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -134,6 +148,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setClient(?Client $client): static
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Binomial>
+     */
+    public function getFirstBinomials(): Collection
+    {
+        return $this->firstBinomials;
+    }
+
+    public function addFirstBinomial(Binomial $firstBinomial): static
+    {
+        if (!$this->firstBinomials->contains($firstBinomial)) {
+            $this->firstBinomials->add($firstBinomial);
+            $firstBinomial->setFirstUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFirstBinomial(Binomial $firstBinomial): static
+    {
+        if ($this->firstBinomials->removeElement($firstBinomial)) {
+            // set the owning side to null (unless already changed)
+            if ($firstBinomial->getFirstUser() === $this) {
+                $firstBinomial->setFirstUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Binomial>
+     */
+    public function getSecondBinomials(): Collection
+    {
+        return $this->secondBinomials;
+    }
+
+    public function addSecondBinomial(Binomial $secondBinomial): static
+    {
+        if (!$this->secondBinomials->contains($secondBinomial)) {
+            $this->secondBinomials->add($secondBinomial);
+            $secondBinomial->setSecondUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSecondBinomial(Binomial $secondBinomial): static
+    {
+        if ($this->secondBinomials->removeElement($secondBinomial)) {
+            // set the owning side to null (unless already changed)
+            if ($secondBinomial->getSecondUser() === $this) {
+                $secondBinomial->setSecondUser(null);
+            }
+        }
 
         return $this;
     }
