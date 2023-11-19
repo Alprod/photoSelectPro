@@ -40,9 +40,13 @@ class Client
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: User::class, orphanRemoval: true)]
     private Collection $users;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: SelectionProcess::class)]
+    private Collection $selectionProcesses;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->selectionProcesses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -158,6 +162,36 @@ class Client
             // set the owning side to null (unless already changed)
             if ($user->getClient() === $this) {
                 $user->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SelectionProcess>
+     */
+    public function getSelectionProcesses(): Collection
+    {
+        return $this->selectionProcesses;
+    }
+
+    public function addSelectionProcess(SelectionProcess $selectionProcess): static
+    {
+        if (!$this->selectionProcesses->contains($selectionProcess)) {
+            $this->selectionProcesses->add($selectionProcess);
+            $selectionProcess->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSelectionProcess(SelectionProcess $selectionProcess): static
+    {
+        if ($this->selectionProcesses->removeElement($selectionProcess)) {
+            // set the owning side to null (unless already changed)
+            if ($selectionProcess->getClient() === $this) {
+                $selectionProcess->setClient(null);
             }
         }
 
