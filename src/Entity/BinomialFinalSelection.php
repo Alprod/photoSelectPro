@@ -21,9 +21,13 @@ class BinomialFinalSelection
     #[ORM\ManyToMany(targetEntity: BinomialPreSelection::class, inversedBy: 'binomialFinalSelections')]
     private Collection $selectedPhoto;
 
+    #[ORM\ManyToMany(targetEntity: GroupFinalSelection::class, mappedBy: 'photo')]
+    private Collection $groupFinalSelections;
+
     public function __construct()
     {
         $this->selectedPhoto = new ArrayCollection();
+        $this->groupFinalSelections = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -63,6 +67,33 @@ class BinomialFinalSelection
     public function removeSelectedPhoto(BinomialPreSelection $selectedPhoto): static
     {
         $this->selectedPhoto->removeElement($selectedPhoto);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GroupFinalSelection>
+     */
+    public function getGroupFinalSelections(): Collection
+    {
+        return $this->groupFinalSelections;
+    }
+
+    public function addGroupFinalSelection(GroupFinalSelection $groupFinalSelection): static
+    {
+        if (!$this->groupFinalSelections->contains($groupFinalSelection)) {
+            $this->groupFinalSelections->add($groupFinalSelection);
+            $groupFinalSelection->addPhoto($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupFinalSelection(GroupFinalSelection $groupFinalSelection): static
+    {
+        if ($this->groupFinalSelections->removeElement($groupFinalSelection)) {
+            $groupFinalSelection->removePhoto($this);
+        }
 
         return $this;
     }

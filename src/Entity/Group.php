@@ -25,9 +25,13 @@ class Group
     #[ORM\OneToMany(mappedBy: 'groupUser', targetEntity: Binomial::class)]
     private Collection $binomials;
 
+    #[ORM\OneToMany(mappedBy: 'groupFinal', targetEntity: GroupFinalSelection::class)]
+    private Collection $groupFinalSelections;
+
     public function __construct()
     {
         $this->binomials = new ArrayCollection();
+        $this->groupFinalSelections = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,6 +87,36 @@ class Group
             // set the owning side to null (unless already changed)
             if ($binomial->getGroupUser() === $this) {
                 $binomial->setGroupUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GroupFinalSelection>
+     */
+    public function getGroupFinalSelections(): Collection
+    {
+        return $this->groupFinalSelections;
+    }
+
+    public function addGroupFinalSelection(GroupFinalSelection $groupFinalSelection): static
+    {
+        if (!$this->groupFinalSelections->contains($groupFinalSelection)) {
+            $this->groupFinalSelections->add($groupFinalSelection);
+            $groupFinalSelection->setGroupFinal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupFinalSelection(GroupFinalSelection $groupFinalSelection): static
+    {
+        if ($this->groupFinalSelections->removeElement($groupFinalSelection)) {
+            // set the owning side to null (unless already changed)
+            if ($groupFinalSelection->getGroupFinal() === $this) {
+                $groupFinalSelection->setGroupFinal(null);
             }
         }
 
