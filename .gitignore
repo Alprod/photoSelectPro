@@ -1,6 +1,5 @@
 .idea
 .DS_STORE
-.github
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -23,12 +22,11 @@
 
 ###> php-cs-fixer/php-cs-fixer ###
 php-cs-fixer
-.php-cs-fixer.php
 .php-cs-fixer.cache
 ###< php-cs-fixer/php-cs-fixer ###
 
 ###> phpstan/phpstan ###
-phpstan.neon
+
 ###< phpstan/phpstan ###
 
 ###> symfony/webpack-encore-bundle ###

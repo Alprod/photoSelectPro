@@ -1,0 +1,28 @@
+parameters:
+    level: 6
+    paths:
+        - src/
+        - tests/
+    reportUnmatchedIgnoredErrors: false
+    excludePaths:
+        analyse:
+            - src/Entity
+    tmpDir: var/tmp
+    scanFiles:
+        - src/Kernel.php
+    parallel:
+        jobSize: 20
+        maximumNumberOfProcesses: 32
+        minimumNumberOfJobsPerProcess: 2
+        processTimeout: 300.0
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    ignoreErrors:
+        -
+            messages:
+                - '#Call to an undefined method [a-zA-Z0-9\\_]+::getId\(\)#'
+                - '#Call to an undefined method [a-zA-Z0-9\\_]+::getEmail\(\)#'
+    symfony:
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+    scanDirectories:
+        - var/cache/dev/Symfony/Config
