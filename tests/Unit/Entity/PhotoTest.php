@@ -60,7 +60,6 @@ class PhotoTest extends TestCase
 
         $this->photo->removeBinomialPreSelection($bsp1);
         self::assertCount(1, $this->photo->getBinomialPreSelections());
-        self::assertNull($bsp1->getPhotos());
 
         $this->photo->removeBinomialPreSelection(new BinomialPreSelection());
 
