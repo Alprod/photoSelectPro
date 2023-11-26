@@ -71,4 +71,24 @@ class ThematicTest extends TestCase
         self::assertNotNull($this->thematic->getGroups());
         self::assertIsObject($this->thematic->getGroups());
     }
+
+    public function testRemoveGroup(): void
+    {
+        $group_1 = new Group();
+        $group_2 = new Group();
+
+        $this->thematic->addGroup($group_1);
+        $this->thematic->addGroup($group_2);
+
+        self::assertNotNull($this->thematic->getGroups());
+        self::assertCount(2, $this->thematic->getGroups());
+
+        $this->thematic->removeGroup($group_1);
+        self::assertCount(1, $this->thematic->getGroups());
+        self::assertNull($group_1->getThematic());
+
+        $this->thematic->removeGroup(new Group());
+
+        self::assertCount(1, $this->thematic->getGroups());
+    }
 }
