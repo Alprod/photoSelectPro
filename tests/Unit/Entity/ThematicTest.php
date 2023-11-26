@@ -90,6 +90,5 @@ class ThematicTest extends TestCase
         $this->thematic->removeGroup(new Group());
 
         self::assertCount(1, $this->thematic->getGroups());
-
     }
 }
