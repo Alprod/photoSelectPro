@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class PhotoTest extends TestCase
 {
-    private $photo;
+    private Photo $photo;
 
     protected function setUp(): void
     {
