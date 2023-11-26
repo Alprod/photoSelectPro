@@ -69,6 +69,5 @@ class UserTest extends TestCase
 
         self::assertIsObject($user->getFirstBinomials());
         self::assertIsObject($user->getSecondBinomials());
-
     }
 }

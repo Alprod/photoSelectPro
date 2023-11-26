@@ -7,8 +7,6 @@ use App\Entity\SelectionProcess;
 use App\Entity\Thematic;
 use PHPUnit\Framework\TestCase;
 
-use function PHPUnit\Framework\assertInstanceOf;
-
 class ThematicTest extends TestCase
 {
     private Thematic $thematic;
@@ -40,7 +38,7 @@ class ThematicTest extends TestCase
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $text = '';
 
-        for ($i = 0; $i < $length; $i++) {
+        for ($i = 0; $i < $length; ++$i) {
             $text .= $characters[random_int(0, strlen($characters) - 1)];
         }
 
@@ -50,7 +48,7 @@ class ThematicTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testSetAndGetDescription():void
+    public function testSetAndGetDescription(): void
     {
         $this->thematic->setDescription($this->generateRandomText());
         self::assertGreaterThanOrEqual(100, strlen($this->thematic->getDescription()));
@@ -70,7 +68,7 @@ class ThematicTest extends TestCase
         $group = new Group();
         $this->thematic->addGroup($group);
 
-        self::assertNotNull( $this->thematic->getGroups());
+        self::assertNotNull($this->thematic->getGroups());
         self::assertIsObject($this->thematic->getGroups());
     }
 }
