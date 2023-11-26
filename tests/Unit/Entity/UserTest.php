@@ -16,7 +16,7 @@ class UserTest extends TestCase
         $this->user = new User();
     }
 
-    public function testInstenceOf(): void
+    public function testInstanceOf(): void
     {
         self::assertInstanceOf(User::class, $this->user);
     }
