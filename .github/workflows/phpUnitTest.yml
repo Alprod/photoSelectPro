@@ -10,8 +10,8 @@ jobs:
       - name: Install dependencies
         uses: php-actions/composer@v6
         with:
-          php_version: latest
-          version: latest
+          php_version: "latest"
+          version: "latest"
           args: --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Cache Composer packages
