@@ -5,12 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         uses: php-actions/composer@v6
         with:
-          args: --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+          args: --ignore-platform-reqs --optimize-autoloader --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Cache Composer packages
         id: composer-cache
