@@ -46,6 +46,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'secondUser', targetEntity: Binomial::class)]
     private Collection $secondBinomials;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $isVerified = false;
+
     public function __construct()
     {
         $this->firstBinomials = new ArrayCollection();
@@ -208,6 +211,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $secondBinomial->setSecondUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }
