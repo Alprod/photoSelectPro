@@ -19,10 +19,20 @@ module.exports = {
                 'ultra4K': '3840px'
             },
             colors: {
-                'success': '#2ecc71',
-                'primary': '#3867d6',
-                'warring': '#f7b731',
-                'danger': '#ff3f34',
+                success: '#2ecc71',
+                primary: 'rgba(81,122,222,0.97)',
+                hoverPrimary: 'rgba(60,108,224,0.97)',
+                warring: '#f7b731',
+                danger: {
+                    100:'#fcb5b3',
+                    200:'#ff9a98',
+                    300:'#fa8684',
+                    400:'#fa6563',
+                    500:'#fc4a47',
+                    600:'#fa3835',
+                    700:'#fc2320',
+                    900: '#ff0f00'
+                },
                 'secondary': '#dcdde1'
             }
         },
