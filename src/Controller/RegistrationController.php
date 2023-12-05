@@ -42,7 +42,12 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
+            if(!$user->getClient()){
+                $this->addFlash('danger', 'Ce lien doit être fourni par votre entreprise ou formateur');
+                return $this->redirectToRoute('app_register');
+            }
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
