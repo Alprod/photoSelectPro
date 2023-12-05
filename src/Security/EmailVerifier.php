@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Service\MessageGeneratorService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +17,8 @@ class EmailVerifier
     public function __construct(
         private readonly VerifyEmailHelperInterface $verifyEmailHelper,
         private readonly MailerInterface $mailer,
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
+        private readonly MessageGeneratorService $messageGenerator
     ) {
     }
 
@@ -36,6 +38,7 @@ class EmailVerifier
         $context['signedUrl'] = $signatureComponents->getSignedUrl();
         $context['expiresAtMessageKey'] = $signatureComponents->getExpirationMessageKey();
         $context['expiresAtMessageData'] = $signatureComponents->getExpirationMessageData();
+        $context['message'] = $this->messageGenerator->getMessageConfirmEmail();
 
         $email->context($context);
 
@@ -53,6 +56,7 @@ class EmailVerifier
     {
         $this->verifyEmailHelper->validateEmailConfirmation($request->getUri(), $user->getId(), $user->getEmail());
 
+        /** @phpstan-ignore-next-line */
         $user->setIsVerified(true);
 
         $this->entityManager->persist($user);
