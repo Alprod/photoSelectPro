@@ -14,12 +14,8 @@ use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 class EmailVerifier
 {
-    public function __construct(
-        private readonly VerifyEmailHelperInterface $verifyEmailHelper,
-        private readonly MailerInterface $mailer,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly MessageGeneratorService $messageGenerator
-    ) {
+    public function __construct(private readonly VerifyEmailHelperInterface $verifyEmailHelper,        private readonly MailerInterface $mailer,        private readonly EntityManagerInterface $entityManager,        private readonly MessageGeneratorService $messageGenerator)
+    {
     }
 
     /**
@@ -27,12 +23,7 @@ class EmailVerifier
      */
     public function sendEmailConfirmation(string $verifyEmailRouteName, UserInterface $user, TemplatedEmail $email): void
     {
-        $signatureComponents = $this->verifyEmailHelper->generateSignature(
-            $verifyEmailRouteName,
-            $user->getId(),
-            $user->getEmail(),
-            ['id' => $user->getId()]
-        );
+        $signatureComponents = $this->verifyEmailHelper->generateSignature($verifyEmailRouteName,            $user->getId(),            $user->getEmail(),            ['id' => $user->getId()]);
 
         $context = $email->getContext();
         $context['signedUrl'] = $signatureComponents->getSignedUrl();
@@ -44,7 +35,7 @@ class EmailVerifier
 
         try {
             $this->mailer->send($email);
-        }catch (TransportExceptionInterface $te){
+        } catch (TransportExceptionInterface $te) {
             throw new \RuntimeException($te->getMessage());
         }
     }
@@ -56,7 +47,7 @@ class EmailVerifier
     {
         $this->verifyEmailHelper->validateEmailConfirmation($request->getUri(), $user->getId(), $user->getEmail());
 
-        /** @phpstan-ignore-next-line */
+        /* @phpstan-ignore-next-line */
         $user->setIsVerified(true);
 
         $this->entityManager->persist($user);

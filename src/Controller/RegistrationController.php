@@ -20,19 +20,11 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-
-    public function __construct(
-        readonly private EmailVerifier $emailVerifier,
-    )
+    public function __construct(readonly private EmailVerifier $emailVerifier)
     {
-
     }
 
     /**
-     * @param Request $request
-     * @param UserPasswordHasherInterface $userPasswordHasher
-     * @param EntityManagerInterface $entityManager
-     * @return Response
      * @throws \Exception
      */
     #[Route('/register', name: 'app_register')]
@@ -42,19 +34,14 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
-            if(!$user->getClient()){
+            if (!$user->getClient()) {
                 $this->addFlash('danger', 'Ce lien doit être fourni par votre entreprise ou formateur');
+
                 return $this->redirectToRoute('app_register');
             }
             // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
+            $user->setPassword($userPasswordHasher->hashPassword($user,                    $form->get('plainPassword')->getData()));
 
             // Ne pas oublier d'indiquer le nom du client qui se fera automatiquement
 
@@ -62,13 +49,11 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
+            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,                (new TemplatedEmail())
                     ->from(new Address('no-reply@teampsp.com', '�Team PhotoSelectPro'))
                     ->to($user->getEmail())
                     ->subject('Veuillez confirmer votre email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
+                    ->htmlTemplate('registration/confirmation_email.html.twig'));
             // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_home');
@@ -79,25 +64,14 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-
-    /**
-     * @param Request $request
-     * @param TranslatorInterface $translator
-     * @param UserRepository $userRepository
-     * @param MessageGeneratorService $messageGenerator
-     * @return Response
-     */
     #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(
-        Request $request,
-        TranslatorInterface $translator,
-        UserRepository $userRepository,
-        MessageGeneratorService $messageGenerator): Response
+    public function verifyUserEmail(Request $request,        TranslatorInterface $translator,        UserRepository $userRepository,        MessageGeneratorService $messageGenerator): Response
     {
         $id = $request->query->get('id');
 
         if (null === $id) {
             $this->addFlash('danger', $messageGenerator->getErrorMessageEmailVerified());
+
             return $this->redirectToRoute('app_register');
         }
 
@@ -105,6 +79,7 @@ class RegistrationController extends AbstractController
 
         if (null === $user) {
             $this->addFlash('danger', $messageGenerator->getErrorMessageEmailVerified());
+
             return $this->redirectToRoute('app_register');
         }
 
@@ -114,6 +89,7 @@ class RegistrationController extends AbstractController
         } catch (VerifyEmailExceptionInterface $exception) {
             // Ajouter un logger pour le suivi des erreurs
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
+
             return $this->redirectToRoute('app_register');
         }
 
