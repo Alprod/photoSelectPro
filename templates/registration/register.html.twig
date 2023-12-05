@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+<div class="max-w-7xl mx-auto py-20 sm:px-6 lg:px-8">
+    
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="bg-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+    
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            {% include 'includes/_alert.html.twig' with {'label': label, 'message': message} %}
+        {% endfor %}
+    {% endfor %}
+    <h1 class="h1 text-center m-20">Inscription</h1>
+    <div class="max-w-md mx-auto">
+        <div class="grid grid-cols-1 gap-6 px-6 iphone:px-8 lg:px-0">
+            {{ form_errors(registrationForm) }}
+            
+            {{ form_start(registrationForm) }}
+                
+                {{ form_label(registrationForm.email) }}
+                {{ form_widget(registrationForm.email) }}
+                
+                {{ form_label(registrationForm.plainPassword) }}
+                {{ form_widget(registrationForm.plainPassword) }}
+                <span class="text-danger text-sm">
+                    {{ form_errors(registrationForm.plainPassword) }}
+                </span>
+                <span class="block text-base text-gray-400 my-2">Lire les
+                    <a href="#" class="text-base hover:underline">Termes</a>
+                </span>
+                {{ form_row(registrationForm.agreeTerms) }}
+            
+                <button type="submit" class="btn-primary ">Register</button>
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}
