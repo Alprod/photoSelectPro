@@ -10,7 +10,7 @@ class MessageGeneratorService
         return 'Bravo! Vous avez réussi à vérifier votre adresse '.$email.'. Vous êtes maintenant près pour votre parcours de selection de photo. Bienvenu à bord';
     }
 
-    public function getMessageConfirmEmail():string
+    public function getMessageConfirmEmail(): string
     {
         $message = [
             "Bonjour! Pour que nous puissions rester en contact, pourriez-vous s'il vous plaît vérifier et confirmer votre adresse e-mail ? Merci beaucoup !",
