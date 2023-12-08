@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Client;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use App\Service\MessageGeneratorService;
+use App\Service\TimingTaskService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,28 +30,38 @@ class RegistrationController extends AbstractController
      * @throws \Exception
      */
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
-    {
+    public function register(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EntityManagerInterface $entityManager,
+        TimingTaskService $timingTask
+    ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $cl = $entityManager->getRepository(Client::class);
+            $client = $cl->find(1);
+
+            $user->setClient($client);
+
             if (!$user->getClient()) {
+                // placer un log afin suivre ceux qu'il n'utilise pas comme il le faut
                 $this->addFlash('danger', 'Ce lien doit être fourni par votre entreprise ou formateur');
 
                 return $this->redirectToRoute('app_register');
             }
             // encode the plain password
-            $user->setPassword($userPasswordHasher->hashPassword($user,                    $form->get('plainPassword')->getData()));
+            $user->setPassword($userPasswordHasher->hashPassword($user, $form->get('plainPassword')->getData()));
 
             // Ne pas oublier d'indiquer le nom du client qui se fera automatiquement
-
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $timingTask->timingEntityManager(User::class, $user);
+            // $entityManager->persist($user);
+            // $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,                (new TemplatedEmail())
+            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user, (new TemplatedEmail())
                     ->from(new Address('no-reply@teampsp.com', '�Team PhotoSelectPro'))
                     ->to($user->getEmail())
                     ->subject('Veuillez confirmer votre email')
@@ -65,7 +77,7 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request,        TranslatorInterface $translator,        UserRepository $userRepository,        MessageGeneratorService $messageGenerator): Response
+    public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository, MessageGeneratorService $messageGenerator): Response
     {
         $id = $request->query->get('id');
 

@@ -4,6 +4,7 @@ namespace App\Security;
 
 use App\Service\MessageGeneratorService;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -14,8 +15,13 @@ use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 class EmailVerifier
 {
-    public function __construct(private readonly VerifyEmailHelperInterface $verifyEmailHelper,        private readonly MailerInterface $mailer,        private readonly EntityManagerInterface $entityManager,        private readonly MessageGeneratorService $messageGenerator)
-    {
+    public function __construct(
+        private readonly VerifyEmailHelperInterface $verifyEmailHelper,
+        private readonly MailerInterface $mailer,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly MessageGeneratorService $messageGenerator,
+        private readonly LoggerInterface $emailSendLogger
+    ) {
     }
 
     /**
@@ -23,7 +29,7 @@ class EmailVerifier
      */
     public function sendEmailConfirmation(string $verifyEmailRouteName, UserInterface $user, TemplatedEmail $email): void
     {
-        $signatureComponents = $this->verifyEmailHelper->generateSignature($verifyEmailRouteName,            $user->getId(),            $user->getEmail(),            ['id' => $user->getId()]);
+        $signatureComponents = $this->verifyEmailHelper->generateSignature($verifyEmailRouteName, $user->getId(), $user->getEmail(), ['id' => $user->getId()]);
 
         $context = $email->getContext();
         $context['signedUrl'] = $signatureComponents->getSignedUrl();
@@ -35,7 +41,16 @@ class EmailVerifier
 
         try {
             $this->mailer->send($email);
+            $this->emailSendLogger->info('Email envoyé avec success', ['user' => $user->getUserIdentifier()]);
         } catch (TransportExceptionInterface $te) {
+            $this->emailSendLogger->error("Erreur lors de l'envoi d'email", [
+                'Email user' => $user->getUserIdentifier(),
+                'Message'    => $te->getMessage(),
+                'Code'       => $te->getCode(),
+                'File'       => $te->getFile(),
+                'Line'       => $te->getLine(),
+            ]);
+
             throw new \RuntimeException($te->getMessage());
         }
     }
