@@ -42,8 +42,7 @@
         "symfony/yaml": "7.0.*",
         "symfonycasts/verify-email-bundle": "^1.15",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0",
-        "ext-zend-opcache": "*"
+        "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "allow-plugins": {
