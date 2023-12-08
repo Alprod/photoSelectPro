@@ -1,23 +1,46 @@
 monolog:
     channels:
         - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
+        - email_send
+        - timing
+    handlers:
+        timing:
+            type: fingers_crossed
+            action_level: debug
+            handler: nested_timing
+            channels: [ timing ]
+            formatter: monolog.formatter.session_request
+
+        nested_timing:
+            type: stream
+            path: "%kernel.logs_dir%/timing/timing_%kernel.environment%.log"
+            level: debug
+
+        email:
+            type: rotating_file
+            path: "%kernel.logs_dir%/email/email_%kernel.environment%.log"
+            level: debug
+            channels: [ email_send ]
+            max_files: 15
+            formatter: monolog.formatter.session_request
 
 when@dev:
     monolog:
         handlers:
+            security:
+                type: rotating_file
+                path: "%kernel.logs_dir%/security/secutity_%kernel.environment%.log"
+                channels: [ security ]
+                level: error
+                max_files: 15
+                formatter: monolog.formatter.session_request
             main:
-                type: stream
+                type: rotating_file
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
-                level: debug
+                level: info
                 channels: ["!event"]
-            # uncomment to get logging in your browser
-            # you may have to allow bigger header sizes in your Web server configuration
-            #firephp:
-            #    type: firephp
-            #    level: info
-            #chromephp:
-            #    type: chromephp
-            #    level: info
+                max_files: 10
+                formatter: monolog.formatter.session_request
             console:
                 type: console
                 process_psr_3_messages: false
@@ -40,6 +63,13 @@ when@test:
 when@prod:
     monolog:
         handlers:
+            security:
+                type: rotating_file
+                path: "%kernel.logs_dir%/security/secutity_%kernel.environment%.log"
+                channels: [ 'security' ]
+                action_level: error
+                max_files: 15
+                formatter: monolog.formatter.session_request
             main:
                 type: fingers_crossed
                 action_level: error

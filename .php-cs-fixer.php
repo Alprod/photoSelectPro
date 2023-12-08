@@ -16,12 +16,21 @@ return $config->setRules([
     'linebreak_after_opening_tag' => true,
     'single_quote' => true,
     'blank_line_before_statement' => ['statements' => ['return', 'if', 'try', 'throw', 'switch']],
-    'binary_operator_spaces' => ['operators' => ['===' => 'align_single_space_minimal', '|' => 'no_space', '=>' => 'align_single_space_minimal_by_scope']],
+    'binary_operator_spaces' => [
+            'operators' => ['===' => 'align_single_space_minimal',
+                '|' => 'no_space',
+                '=>' => 'align_single_space_minimal_by_scope']],
     'class_attributes_separation' => ['elements' => ['property' => 'only_if_meta', 'const' => 'only_if_meta']],
-    'class_definition' => ['multi_line_extends_each_single_line' => true],
-    'method_argument_space' => ['keep_multiple_spaces_after_comma' => true, 'on_multiline' => 'ensure_single_line'],
+    'class_definition' => [
+            'multi_line_extends_each_single_line' => true,
+            'inline_constructor_arguments' => false,
+    ],
+    'method_argument_space' => [
+            'keep_multiple_spaces_after_comma' => true,
+            'on_multiline' => 'ensure_fully_multiline'
+    ],
     'no_alternative_syntax' => ['fix_non_monolithic_code' => false],
     'no_superfluous_phpdoc_tags' => ['allow_mixed' => false, 'allow_unused_params' => false],
-    'phpdoc_trim' => false
+    'phpdoc_trim' => false,
 ])
     ->setFinder($finder);
