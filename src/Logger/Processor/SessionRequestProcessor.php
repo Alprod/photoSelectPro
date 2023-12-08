@@ -2,7 +2,6 @@
 
 namespace App\Logger\Processor;
 
-use Monolog\Attribute\AsMonologProcessor;
 use Monolog\LogRecord;
 use Monolog\Processor\ProcessorInterface;
 use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
@@ -15,16 +14,17 @@ class SessionRequestProcessor implements ProcessorInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __invoke(LogRecord $record): LogRecord
     {
         try {
             $session = $this->requestStack->getSession();
-        }catch (SessionNotFoundException $e){
+        } catch (SessionNotFoundException $e) {
             return $record;
         }
-        if (!$session->isStarted()){
+
+        if (!$session->isStarted()) {
             return $record;
         }
         $sessionId = substr($session->getId(), 0, 8) ?: '????????';

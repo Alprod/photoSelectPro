@@ -33,8 +33,9 @@ class RegistrationController extends AbstractController
     public function register(
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
-        EntityManagerInterface $entityManager, TimingTaskService $timingTask): Response
-    {
+        EntityManagerInterface $entityManager,
+        TimingTaskService $timingTask
+    ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -48,6 +49,7 @@ class RegistrationController extends AbstractController
             if (!$user->getClient()) {
                 // placer un log afin suivre ceux qu'il n'utilise pas comme il le faut
                 $this->addFlash('danger', 'Ce lien doit être fourni par votre entreprise ou formateur');
+
                 return $this->redirectToRoute('app_register');
             }
             // encode the plain password
@@ -55,9 +57,8 @@ class RegistrationController extends AbstractController
 
             // Ne pas oublier d'indiquer le nom du client qui se fera automatiquement
             $timingTask->timingEntityManager(User::class, $user);
-            //$entityManager->persist($user);
-            //$entityManager->flush();
-
+            // $entityManager->persist($user);
+            // $entityManager->flush();
 
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user, (new TemplatedEmail())

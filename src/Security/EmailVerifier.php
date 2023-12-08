@@ -21,8 +21,7 @@ class EmailVerifier
         private readonly EntityManagerInterface $entityManager,
         private readonly MessageGeneratorService $messageGenerator,
         private readonly LoggerInterface $emailSendLogger
-    )
-    {
+    ) {
     }
 
     /**
@@ -41,18 +40,15 @@ class EmailVerifier
         $email->context($context);
 
         try {
-
             $this->mailer->send($email);
             $this->emailSendLogger->info('Email envoyé avec success', ['user' => $user->getUserIdentifier()]);
-
         } catch (TransportExceptionInterface $te) {
-
             $this->emailSendLogger->error("Erreur lors de l'envoi d'email", [
                 'Email user' => $user->getUserIdentifier(),
-                'Message' => $te->getMessage(),
-                'Code' => $te->getCode(),
-                'File' => $te->getFile(),
-                'Line' => $te->getLine()
+                'Message'    => $te->getMessage(),
+                'Code'       => $te->getCode(),
+                'File'       => $te->getFile(),
+                'Line'       => $te->getLine(),
             ]);
 
             throw new \RuntimeException($te->getMessage());

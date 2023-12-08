@@ -12,8 +12,8 @@ class TimingTaskService
         readonly private Stopwatch $stopwatch,
         readonly private LoggerInterface $timingLogger,
         readonly private EntityManagerInterface $entityManager
-    )
-    {}
+    ) {
+    }
 
     public function timingEntityManager(string $section, object $object): void
     {
@@ -26,9 +26,8 @@ class TimingTaskService
         $duration = round($event->getDuration(), 3);
         $memory = $event->getMemory();
         $this->timingLogger->info('Temps d\'exécution : '.$duration.' ms | Mémoire utilisée : '.$memory.' bytes', [
-            'action' => 'Register',
-            'section' => $section
+            'action'  => 'Register',
+            'section' => $section,
         ]);
     }
-
 }
