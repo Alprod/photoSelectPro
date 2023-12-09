@@ -10,6 +10,7 @@ use App\Security\EmailVerifier;
 use App\Service\MessageGeneratorService;
 use App\Service\TimingTaskService;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,13 +35,16 @@ class RegistrationController extends AbstractController
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface $entityManager,
-        TimingTaskService $timingTask
+        TimingTaskService $timingTask,
+        LoggerInterface $securityLogger
     ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // à modifier pour que cela se fasse via une invite par url envoyé par le client
             $cl = $entityManager->getRepository(Client::class);
             $client = $cl->find(1);
 
@@ -48,24 +52,22 @@ class RegistrationController extends AbstractController
 
             if (!$user->getClient()) {
                 // placer un log afin suivre ceux qu'il n'utilise pas comme il le faut
+                $securityLogger->info("Tantative de d'inscriptoin non autorisé", ['action' => 'register']);
                 $this->addFlash('danger', 'Ce lien doit être fourni par votre entreprise ou formateur');
-
                 return $this->redirectToRoute('app_register');
             }
-            // encode the plain password
+
             $user->setPassword($userPasswordHasher->hashPassword($user, $form->get('plainPassword')->getData()));
 
             // Ne pas oublier d'indiquer le nom du client qui se fera automatiquement
             $timingTask->timingEntityManager(User::class, $user);
-            // $entityManager->persist($user);
-            // $entityManager->flush();
 
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user, (new TemplatedEmail())
                     ->from(new Address('no-reply@teampsp.com', '�Team PhotoSelectPro'))
                     ->to($user->getEmail())
                     ->subject('Veuillez confirmer votre email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig'));
+                    ->htmlTemplate('emails/confirmation_email.html.twig'));
             // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_home');
