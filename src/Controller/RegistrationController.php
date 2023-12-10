@@ -48,11 +48,11 @@ class RegistrationController extends AbstractController
             $cl = $entityManager->getRepository(Client::class);
             $client = $cl->find(1);
 
-            $user->setClient($client);
+            //$user->setClient($client);
 
             if (!$user->getClient()) {
                 // placer un log afin suivre ceux qu'il n'utilise pas comme il le faut
-                $securityLogger->info("Tantative de d'inscriptoin non autorisé", ['action' => 'register']);
+                $securityLogger->error("Tantative de d'inscriptoin non autorisé", ['user email' => $form->get('email')->getData(),'route_name' => 'app_register']);
                 $this->addFlash('danger', 'Ce lien doit être fourni par votre entreprise ou formateur');
                 return $this->redirectToRoute('app_register');
             }
