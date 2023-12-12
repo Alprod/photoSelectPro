@@ -5,12 +5,12 @@ namespace App\Controller;
 use App\Entity\Client;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Logger\SecurityLogger;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use App\Service\MessageGeneratorService;
 use App\Service\TimingTaskService;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +23,11 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-    public function __construct(readonly private EmailVerifier $emailVerifier)
+    public function __construct(
+        readonly private EmailVerifier $emailVerifier,
+        readonly private SecurityLogger $securityLogger,
+        readonly private MessageGeneratorService $messageGenerator
+    )
     {
     }
 
@@ -36,7 +40,6 @@ class RegistrationController extends AbstractController
         UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface $entityManager,
         TimingTaskService $timingTask,
-        LoggerInterface $securityLogger
     ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -44,25 +47,24 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $emailUserData =  $form->get('email')->getData();
             // à modifier pour que cela se fasse via une invite par url envoyé par le client
             $cl = $entityManager->getRepository(Client::class);
             $client = $cl->find(1);
 
-            //$user->setClient($client);
+            $user->setClient($client);
 
             if (!$user->getClient()) {
-                // placer un log afin suivre ceux qu'il n'utilise pas comme il le faut
-                $securityLogger->error("Tantative de d'inscriptoin non autorisé", ['user email' => $form->get('email')->getData(),'route_name' => 'app_register']);
-                $this->addFlash('danger', 'Ce lien doit être fourni par votre entreprise ou formateur');
+                $this->securityLogger->securityErrorLog("Tantative de d'inscriptoin non autorisé", ['user email' => $emailUserData,'route_name' => 'app_register']);
+                $this->addFlash('danger', $this->messageGenerator->getMessageFailure());
                 return $this->redirectToRoute('app_register');
             }
 
             $user->setPassword($userPasswordHasher->hashPassword($user, $form->get('plainPassword')->getData()));
 
             // Ne pas oublier d'indiquer le nom du client qui se fera automatiquement
-            $timingTask->timingEntityManager(User::class, $user);
+            $timingTask->timingEntityManager('Register',User::class, $user);
 
-            // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user, (new TemplatedEmail())
                     ->from(new Address('no-reply@teampsp.com', '�Team PhotoSelectPro'))
                     ->to($user->getEmail())
@@ -79,21 +81,23 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository, MessageGeneratorService $messageGenerator): Response
+    public function verifyUserEmail(
+        Request $request,
+        TranslatorInterface $translator,
+        UserRepository $userRepository,
+    ): Response
     {
         $id = $request->query->get('id');
 
         if (null === $id) {
-            $this->addFlash('danger', $messageGenerator->getErrorMessageEmailVerified());
-
+            $this->addFlash('danger', $this->messageGenerator->getErrorMessageEmailVerified());
             return $this->redirectToRoute('app_register');
         }
 
         $user = $userRepository->find($id);
 
         if (null === $user) {
-            $this->addFlash('danger', $messageGenerator->getErrorMessageEmailVerified());
-
+            $this->addFlash('danger', $this->messageGenerator->getErrorMessageEmailVerified());
             return $this->redirectToRoute('app_register');
         }
 
@@ -101,13 +105,13 @@ class RegistrationController extends AbstractController
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
-            // Ajouter un logger pour le suivi des erreurs
+            $this->securityLogger->securityInfoLog('Utilisateur tarder de veifier son email');
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
             return $this->redirectToRoute('app_register');
         }
 
-        $this->addFlash('success', $messageGenerator->getSuccessEmailIsVerified($user->getEmail()));
+        $this->addFlash('success', $this->messageGenerator->getSuccessEmailIsVerified($user->getEmail()));
 
         // Changer la redirection vers le login
         return $this->redirectToRoute('app_register');

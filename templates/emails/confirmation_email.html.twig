@@ -3,11 +3,11 @@
 
 <p>
     {{ message }} <br><br>
-    <a href="{{ signedUrl|raw }}">Confirm my Email</a>.
-    This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+    <a href="{{ signedUrl|raw }}">Comfiner votre email</a>.
+    Ce lien expire dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle', 'fr_FR') }}.
 </p>
 
 <p>
-    Cheers!
+    Bravo!
 </p>
 {% endapply %}

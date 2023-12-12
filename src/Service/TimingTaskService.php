@@ -2,20 +2,20 @@
 
 namespace App\Service;
 
+use App\Logger\TimingLogger;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 class TimingTaskService
 {
     public function __construct(
         readonly private Stopwatch $stopwatch,
-        readonly private LoggerInterface $timingLogger,
-        readonly private EntityManagerInterface $entityManager
+        readonly private EntityManagerInterface $entityManager,
+        readonly private TimingLogger $timingLogger
     ) {
     }
 
-    public function timingEntityManager(string $section, object $object): void
+    public function timingEntityManager(string $action,string $section, object $object): void
     {
         $this->stopwatch->start($section);
 
@@ -25,8 +25,11 @@ class TimingTaskService
         $event = $this->stopwatch->stop($section);
         $duration = round($event->getDuration(), 3);
         $memory = $event->getMemory();
-        $this->timingLogger->info('Temps d\'exécution : '.$duration.' ms | Mémoire utilisée : '.$memory.' bytes', [
-            'action'  => 'Register',
+        $this->timingLogger->timingInfoLogger(
+            $duration,
+            $memory,
+            [
+            'action'  => $action,
             'section' => $section,
         ]);
     }
