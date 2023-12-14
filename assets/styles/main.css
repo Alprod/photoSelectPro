@@ -17,7 +17,7 @@
     [multiple],
     textarea,
     select {
-        @apply py-3 shadow-sm focus:ring-amber-400 border border-gray-300 focus:border-amber-400 block w-full sm:text-sm rounded-md mb-6;
+        @apply py-3 shadow-sm focus:ring-amber-400 border border-gray-300 focus:border-amber-400 block w-full sm:text-sm rounded-md mb-2;
     }
 
     [type='checkbox'],
