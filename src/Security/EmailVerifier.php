@@ -19,15 +19,18 @@ class EmailVerifier
     public function __construct(
         private readonly VerifyEmailHelperInterface $verifyEmailHelper,
         private readonly MailerInterface $mailer,
-        private readonly EntityManagerInterface $entityManager,
         private readonly MessageGeneratorService $messageGenerator,
         private readonly EmailSendLogger $emailSendLogger,
         private readonly TimingTaskService $timingTaskService
     ) {
     }
 
+
     /**
-     * @throws \Exception
+     * @param string $verifyEmailRouteName
+     * @param UserInterface $user
+     * @param TemplatedEmail $email
+     * @return void
      */
     public function sendEmailConfirmation(
         string $verifyEmailRouteName,
@@ -55,7 +58,11 @@ class EmailVerifier
         }
     }
 
+
     /**
+     * @param Request $request
+     * @param UserInterface $user
+     * @return void
      * @throws VerifyEmailExceptionInterface
      */
     public function handleEmailConfirmation(Request $request, UserInterface $user): void

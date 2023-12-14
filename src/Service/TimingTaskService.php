@@ -15,6 +15,14 @@ class TimingTaskService
     ) {
     }
 
+    /**
+     * Visuel en log du temps de sauvgarde en BDD
+     *
+     * @param string $action
+     * @param string $section
+     * @param object $object
+     * @return void
+     */
     public function timingEntityManager(string $action,string $section, object $object): void
     {
         $this->stopwatch->start($section);
