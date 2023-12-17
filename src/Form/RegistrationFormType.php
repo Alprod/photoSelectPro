@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -47,6 +48,15 @@ class RegistrationFormType extends AbstractType
                         'max'        => 4096,
                     ]),
                 ],
+            ])
+            ->add('refClientNumber', TextType::class, [
+                'label'       => 'Référence',
+                'mapped'      => false,
+                'required'    => false,
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez indiquer la référence transmit par mail de votre formateur ou entreprise']),
+                ],
+                'help'        => 'Veuillez indiquer le numéro de reference transmis par mail',
             ])
         ;
     }

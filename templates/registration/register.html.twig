@@ -4,36 +4,39 @@
 
 {% block body %}
 <div class="max-w-7xl mx-auto py-20 sm:px-6 lg:px-8">
-    
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="bg-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
-    
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            {% include 'includes/_alert.html.twig' with {'label': label, 'message': message} %}
-        {% endfor %}
-    {% endfor %}
     <h1 class="h1 text-center m-20">Inscription</h1>
     <div class="max-w-md mx-auto">
         <div class="grid grid-cols-1 gap-6 px-6 iphone:px-8 lg:px-0">
             {{ form_errors(registrationForm) }}
             
             {{ form_start(registrationForm) }}
+                <div class="py-3">
+                    {{ form_label(registrationForm.email) }}
+                    {{ form_widget(registrationForm.email) }}
+                    <span class="text-red-500 text-sm">
+                        {{ form_errors(registrationForm.email) }}
+                    </span>
+                </div>
+                <div class="py-3">
+                    {{ form_label(registrationForm.plainPassword) }}
+                    {{ form_widget(registrationForm.plainPassword) }}
+                    <span class="text-red-500 text-sm">
+                        {{ form_errors(registrationForm.plainPassword) }}
+                    </span>
+                </div>
+                <div class="py-3">
+                    {{ form_label(registrationForm.refClientNumber) }}
+                    {{ form_widget(registrationForm.refClientNumber) }}
+                    <span class="text-red-500 text-sm">{{ form_errors(registrationForm.refClientNumber) }}</span>
+                    <span class="text-sm text-gray-500">{{ form_help(registrationForm.refClientNumber) }}</span>
+                </div>
+                <div class="py-3">
+                    <span class="block text-base text-gray-500 my-2">Lire les
+                        <a href="#" class="text-base hover:underline">Termes</a>
+                    </span>
+                    {{ form_row(registrationForm.agreeTerms) }}
+                </div>
                 
-                {{ form_label(registrationForm.email) }}
-                {{ form_widget(registrationForm.email) }}
-                
-                {{ form_label(registrationForm.plainPassword) }}
-                {{ form_widget(registrationForm.plainPassword) }}
-                <span class="text-danger text-sm">
-                    {{ form_errors(registrationForm.plainPassword) }}
-                </span>
-                <span class="block text-base text-gray-400 my-2">Lire les
-                    <a href="#" class="text-base hover:underline">Termes</a>
-                </span>
-                {{ form_row(registrationForm.agreeTerms) }}
-            
                 <button type="submit" class="btn-primary ">Register</button>
             {{ form_end(registrationForm) }}
         </div>

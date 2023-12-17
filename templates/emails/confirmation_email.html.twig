@@ -1,0 +1,19 @@
+{% apply inline_css(source("@styles/emails.css")) %}
+<main class="container">
+    <section class="section1">
+        <h1>Confirmer votre Email</h1>
+        <h5>{{ email.to[0].address }}</h5>
+        <p>{{ message }}</p>
+    </section>
+    <section class="section2">
+        <div class="link">
+            <a href="{{ signedUrl|raw }}">Confirmer votre email</a>.
+        </div>
+        <p class="info">Ce lien expire dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle', 'fr_FR') }}.</p>
+        <p class="txt">Félicitation !!!</p>
+    </section>
+</main>
+<footer class="footer">
+
+</footer>
+{% endapply %}

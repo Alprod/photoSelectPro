@@ -31,3 +31,15 @@ services:
     App\Logger\Processor\SessionRequestProcessor:
         tags:
             - { name: monolog.processor }
+
+    App\Logger\SecurityLogger:
+        arguments:
+            $securityLogger: '@monolog.logger.security'
+
+    App\Logger\TimingLogger:
+        arguments:
+            $timingLogger: '@monolog.logger.timing'
+    
+    App\Logger\EmailSendLogger:
+        arguments:
+            $emailSendLogger: '@monolog.logger.email_send'

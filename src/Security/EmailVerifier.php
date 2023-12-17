@@ -2,9 +2,9 @@
 
 namespace App\Security;
 
+use App\Logger\EmailSendLogger;
 use App\Service\MessageGeneratorService;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
+use App\Service\TimingTaskService;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -18,17 +18,17 @@ class EmailVerifier
     public function __construct(
         private readonly VerifyEmailHelperInterface $verifyEmailHelper,
         private readonly MailerInterface $mailer,
-        private readonly EntityManagerInterface $entityManager,
         private readonly MessageGeneratorService $messageGenerator,
-        private readonly LoggerInterface $emailSendLogger
+        private readonly EmailSendLogger $emailSendLogger,
+        private readonly TimingTaskService $timingTaskService
     ) {
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function sendEmailConfirmation(string $verifyEmailRouteName, UserInterface $user, TemplatedEmail $email): void
-    {
+    public function sendEmailConfirmation(
+        string $verifyEmailRouteName,
+        UserInterface $user,
+        TemplatedEmail $email
+    ): void {
         $signatureComponents = $this->verifyEmailHelper->generateSignature($verifyEmailRouteName, $user->getId(), $user->getEmail(), ['id' => $user->getId()]);
 
         $context = $email->getContext();
@@ -41,15 +41,9 @@ class EmailVerifier
 
         try {
             $this->mailer->send($email);
-            $this->emailSendLogger->info('Email envoyé avec success', ['user' => $user->getUserIdentifier()]);
+            $this->emailSendLogger->emailSendInfo('Email envoyé avec success', $user->getUserIdentifier());
         } catch (TransportExceptionInterface $te) {
-            $this->emailSendLogger->error("Erreur lors de l'envoi d'email", [
-                'Email user' => $user->getUserIdentifier(),
-                'Message'    => $te->getMessage(),
-                'Code'       => $te->getCode(),
-                'File'       => $te->getFile(),
-                'Line'       => $te->getLine(),
-            ]);
+            $this->emailSendLogger->emailSendError("Erreur lors de l'envoi d'email", $te, $user->getUserIdentifier());
 
             throw new \RuntimeException($te->getMessage());
         }
@@ -65,7 +59,6 @@ class EmailVerifier
         /* @phpstan-ignore-next-line */
         $user->setIsVerified(true);
 
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        $this->timingTaskService->timingEntityManager('Confirmation Email', __CLASS__, $user);
     }
 }

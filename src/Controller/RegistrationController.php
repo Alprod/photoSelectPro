@@ -5,11 +5,12 @@ namespace App\Controller;
 use App\Entity\Client;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Logger\SecurityLogger;
+use App\Repository\ClientRepository;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use App\Service\MessageGeneratorService;
 use App\Service\TimingTaskService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,52 +23,57 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-    public function __construct(readonly private EmailVerifier $emailVerifier)
-    {
+    public function __construct(
+        readonly private EmailVerifier $emailVerifier,
+        readonly private SecurityLogger $securityLogger,
+        readonly private MessageGeneratorService $messageGenerator
+    ) {
     }
 
     /**
-     * @throws \Exception
+     * Enregistrement d'un utilisateur seulement s'il détient le numéro code client.
+     *
      */
     #[Route('/register', name: 'app_register')]
     public function register(
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
-        EntityManagerInterface $entityManager,
-        TimingTaskService $timingTask
+        TimingTaskService $timingTask,
+        ClientRepository $clientRepo
     ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $cl = $entityManager->getRepository(Client::class);
-            $client = $cl->find(1);
+            $emailUserData = $form->get('email')->getData();
+            $refClientNumber = $form->get('refClientNumber')->getData();
+            $plainPassword = $form->get('plainPassword')->getData();
 
-            $user->setClient($client);
+            $client = $clientRepo->findOneBy(['refNumber' => $refClientNumber]);
 
-            if (!$user->getClient()) {
-                // placer un log afin suivre ceux qu'il n'utilise pas comme il le faut
-                $this->addFlash('danger', 'Ce lien doit être fourni par votre entreprise ou formateur');
+            if (null === $client) {
+                $this->securityLogger->securityErrorLog("Tantative de d'inscriptoin non autorisé", ['user email' => $emailUserData, 'route_name' => 'app_register']);
+                $this->addFlash('danger', $this->messageGenerator->getMessageFailure());
 
                 return $this->redirectToRoute('app_register');
             }
-            // encode the plain password
-            $user->setPassword($userPasswordHasher->hashPassword($user, $form->get('plainPassword')->getData()));
+            $user->setClient($client)
+                ->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $plainPassword
+                    )
+                );
+            $timingTask->timingEntityManager('Register user', User::class, $user);
 
-            // Ne pas oublier d'indiquer le nom du client qui se fera automatiquement
-            $timingTask->timingEntityManager(User::class, $user);
-            // $entityManager->persist($user);
-            // $entityManager->flush();
-
-            // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user, (new TemplatedEmail())
                     ->from(new Address('no-reply@teampsp.com', '�Team PhotoSelectPro'))
                     ->to($user->getEmail())
                     ->subject('Veuillez confirmer votre email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig'));
-            // do anything else you need here, like send an email
+                    ->htmlTemplate('emails/confirmation_email.html.twig'));
 
+            // changer pour une page qui indique à l'utilisateur de Check sa boite mail
             return $this->redirectToRoute('app_home');
         }
 
@@ -76,13 +82,21 @@ class RegistrationController extends AbstractController
         ]);
     }
 
+    /**
+     * Valide le lien de confirmation par courrier électronique.
+     * Définit User::isVerified=true et persiste.
+     *
+     */
     #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository, MessageGeneratorService $messageGenerator): Response
-    {
+    public function verifyUserEmail(
+        Request $request,
+        TranslatorInterface $translator,
+        UserRepository $userRepository,
+    ): Response {
         $id = $request->query->get('id');
 
         if (null === $id) {
-            $this->addFlash('danger', $messageGenerator->getErrorMessageEmailVerified());
+            $this->addFlash('danger', $this->messageGenerator->getErrorMessageEmailVerified());
 
             return $this->redirectToRoute('app_register');
         }
@@ -90,22 +104,21 @@ class RegistrationController extends AbstractController
         $user = $userRepository->find($id);
 
         if (null === $user) {
-            $this->addFlash('danger', $messageGenerator->getErrorMessageEmailVerified());
+            $this->addFlash('danger', $this->messageGenerator->getErrorMessageEmailVerified());
 
             return $this->redirectToRoute('app_register');
         }
 
-        // validate email confirmation link, sets User::isVerified=true and persists
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
-            // Ajouter un logger pour le suivi des erreurs
+            $this->securityLogger->securityInfoLog('Utilisateur tarder de veifier son email');
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
             return $this->redirectToRoute('app_register');
         }
 
-        $this->addFlash('success', $messageGenerator->getSuccessEmailIsVerified($user->getEmail()));
+        $this->addFlash('success', $this->messageGenerator->getSuccessEmailIsVerified($user->getEmail()));
 
         // Changer la redirection vers le login
         return $this->redirectToRoute('app_register');

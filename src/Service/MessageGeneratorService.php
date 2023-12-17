@@ -28,4 +28,9 @@ class MessageGeneratorService
     {
         return "Nous nous excusons, mais nous n'avons pas réussi à vous localiser. Veuillez vérifier les détails que vous avez fournis et réessayer, ou n'hésitez pas à contacter notre équipe d'assistance en ligne pour obtenir de l'aide immédiate.";
     }
+
+    public function getMessageFailure(): string
+    {
+        return 'Cet élément doit être fourni par la partie concernée, que ce soit une entreprise, un formateur ou toute autre source appropriée.';
+    }
 }

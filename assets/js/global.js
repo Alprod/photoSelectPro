@@ -43,9 +43,25 @@ let words  = [
 ];
 const container = document.getElementById('wordCloud');
 
-words.forEach(wrds => {
+words?.forEach(wrds => {
     const span = document.createElement('span');
     span.innerText = wrds.text;
     span.style.fontSize = `${wrds.size}px`;
-    container.appendChild(span)
+    container?.appendChild(span)
 })
+
+const closed = document.getElementById('closed')
+const menu = document.getElementById('menu')
+
+const toggleClassDropdownMenuOnClick = (elmtId, className1, className2) => {
+    elmtId?.addEventListener('click', () => {
+        const dropdown = document.getElementById('dropdownMenu')
+        if(dropdown.classList.contains(className1)){
+            dropdown.classList.remove(className1);
+            dropdown.classList.add(className2);
+        }
+    });
+}
+
+toggleClassDropdownMenuOnClick(menu,'hidden','absolute');
+toggleClassDropdownMenuOnClick(closed,'absolute','hidden');
