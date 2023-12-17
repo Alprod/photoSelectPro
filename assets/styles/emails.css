@@ -1,0 +1,123 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
+html, body,main,section, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+body {
+    background: #fff;
+    color: #000;
+}
+main {
+    font-family: 'Montserrat', sans-serif;
+    width: 80%;
+    margin: 16px auto;
+    padding: 20px;
+    background: #e5e5e5;
+    border-radius: 10px;
+}
+.section1 {
+    background: #fcfcfcda;
+    padding: 10px;
+    border: solid transparent 1px;
+    border-radius: 4px;
+    margin: 50px 10px;
+}
+
+.section1 p {
+    font-size: 15px;
+    font-weight: 100;
+    padding: 10px;
+}
+h1 {
+    font-size: 2rem;
+    padding: 12px 0;
+}
+h5{
+    font-size: 1.3rem;
+    padding: 10px 0;
+}
+h1 , h5{
+    font-weight: bold;
+    text-align: center;
+}
+
+.section2{
+    margin: 90px 10px;
+}
+
+.section2 a {
+    background: #74b9ff;
+    font-size: 20px;
+    padding: 10px;
+    color: #fff;
+    border: #74b9ff solid 1px;
+    text-align: center;
+    border-radius: 10px;
+    text-decoration: unset;
+}
+.section2 a:hover {
+    background: #50a6fc;
+}
+.link {
+    text-align: center;
+    margin: 40px 0;
+}
+.link:hover {
+    cursor: pointer;
+}
+.info, .txt {
+    text-align: center;
+    padding: 6px;
+}
+.info {
+    color: red;
+}
+.txt {
+    font-size: 2rem;
+    font-style: italic;
+    text-decoration: underline;
+}
