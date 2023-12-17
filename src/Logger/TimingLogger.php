@@ -7,7 +7,8 @@ use Psr\Log\LoggerInterface;
 class TimingLogger
 {
     public function __construct(readonly private LoggerInterface $timingLogger)
-    {}
+    {
+    }
 
     public function timingInfoLogger(int|float $duration, int $memory, array $data = []): void
     {

@@ -8,16 +8,17 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 class EmailSendLogger
 {
     public function __construct(readonly private LoggerInterface $emailSendLogger)
-    {}
+    {
+    }
 
-    public function emailSendError(string $message, TransportExceptionInterface $te,string $emailUser): void
+    public function emailSendError(string $message, TransportExceptionInterface $te, string $emailUser): void
     {
         $this->emailSendLogger->error($message, [
             'Email user' => $emailUser,
-            'Message' => $te->getMessage(),
-            'Code' => $te->getCode(),
-            'File' => $te->getFile(),
-            'Line' => $te->getLine()
+            'Message'    => $te->getMessage(),
+            'Code'       => $te->getCode(),
+            'File'       => $te->getFile(),
+            'Line'       => $te->getLine(),
         ]);
     }
 

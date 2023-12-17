@@ -5,7 +5,6 @@ namespace App\Security;
 use App\Logger\EmailSendLogger;
 use App\Service\MessageGeneratorService;
 use App\Service\TimingTaskService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -25,19 +24,11 @@ class EmailVerifier
     ) {
     }
 
-
-    /**
-     * @param string $verifyEmailRouteName
-     * @param UserInterface $user
-     * @param TemplatedEmail $email
-     * @return void
-     */
     public function sendEmailConfirmation(
         string $verifyEmailRouteName,
         UserInterface $user,
         TemplatedEmail $email
-    ): void
-    {
+    ): void {
         $signatureComponents = $this->verifyEmailHelper->generateSignature($verifyEmailRouteName, $user->getId(), $user->getEmail(), ['id' => $user->getId()]);
 
         $context = $email->getContext();
@@ -52,17 +43,13 @@ class EmailVerifier
             $this->mailer->send($email);
             $this->emailSendLogger->emailSendInfo('Email envoyé avec success', $user->getUserIdentifier());
         } catch (TransportExceptionInterface $te) {
-            $this->emailSendLogger->emailSendError("Erreur lors de l'envoi d'email", $te,$user->getUserIdentifier());
+            $this->emailSendLogger->emailSendError("Erreur lors de l'envoi d'email", $te, $user->getUserIdentifier());
 
             throw new \RuntimeException($te->getMessage());
         }
     }
 
-
     /**
-     * @param Request $request
-     * @param UserInterface $user
-     * @return void
      * @throws VerifyEmailExceptionInterface
      */
     public function handleEmailConfirmation(Request $request, UserInterface $user): void
@@ -72,7 +59,6 @@ class EmailVerifier
         /* @phpstan-ignore-next-line */
         $user->setIsVerified(true);
 
-        $this->timingTaskService->timingEntityManager('Confirmation Email',__CLASS__, $user);
-
+        $this->timingTaskService->timingEntityManager('Confirmation Email', __CLASS__, $user);
     }
 }

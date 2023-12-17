@@ -50,13 +50,13 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('refClientNumber', TextType::class, [
-                'label' => 'Référence',
-                'mapped' => false,
-                'required' => false,
+                'label'       => 'Référence',
+                'mapped'      => false,
+                'required'    => false,
                 'constraints' => [
-                    new NotBlank(['message' => 'Veuillez indiquer la référence transmit par mail de votre formateur ou entreprise'])
+                    new NotBlank(['message' => 'Veuillez indiquer la référence transmit par mail de votre formateur ou entreprise']),
                 ],
-                'help' => 'Veuillez indiquer le numéro de reference transmis par mail'
+                'help'        => 'Veuillez indiquer le numéro de reference transmis par mail',
             ])
         ;
     }

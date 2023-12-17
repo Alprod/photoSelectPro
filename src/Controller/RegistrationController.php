@@ -11,7 +11,6 @@ use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use App\Service\MessageGeneratorService;
 use App\Service\TimingTaskService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,17 +27,12 @@ class RegistrationController extends AbstractController
         readonly private EmailVerifier $emailVerifier,
         readonly private SecurityLogger $securityLogger,
         readonly private MessageGeneratorService $messageGenerator
-    )
-    {}
+    ) {
+    }
 
     /**
      * Enregistrement d'un utilisateur seulement s'il détient le numéro code client.
      *
-     * @param Request $request
-     * @param UserPasswordHasherInterface $userPasswordHasher
-     * @param TimingTaskService $timingTask
-     * @param ClientRepository $clientRepo
-     * @return Response
      */
     #[Route('/register', name: 'app_register')]
     public function register(
@@ -52,16 +46,16 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $emailUserData =  $form->get('email')->getData();
+            $emailUserData = $form->get('email')->getData();
             $refClientNumber = $form->get('refClientNumber')->getData();
             $plainPassword = $form->get('plainPassword')->getData();
 
             $client = $clientRepo->findOneBy(['refNumber' => $refClientNumber]);
 
-            if ($client === null) {
-                $this->securityLogger->securityErrorLog("Tantative de d'inscriptoin non autorisé", ['user email' => $emailUserData,'route_name' => 'app_register']);
+            if (null === $client) {
+                $this->securityLogger->securityErrorLog("Tantative de d'inscriptoin non autorisé", ['user email' => $emailUserData, 'route_name' => 'app_register']);
                 $this->addFlash('danger', $this->messageGenerator->getMessageFailure());
+
                 return $this->redirectToRoute('app_register');
             }
             $user->setClient($client)
@@ -71,7 +65,7 @@ class RegistrationController extends AbstractController
                         $plainPassword
                     )
                 );
-            $timingTask->timingEntityManager('Register user',User::class, $user);
+            $timingTask->timingEntityManager('Register user', User::class, $user);
 
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user, (new TemplatedEmail())
                     ->from(new Address('no-reply@teampsp.com', '�Team PhotoSelectPro'))
@@ -79,7 +73,7 @@ class RegistrationController extends AbstractController
                     ->subject('Veuillez confirmer votre email')
                     ->htmlTemplate('emails/confirmation_email.html.twig'));
 
-            //changer pour une page qui indique à l'utilisateur de Check sa boite mail
+            // changer pour une page qui indique à l'utilisateur de Check sa boite mail
             return $this->redirectToRoute('app_home');
         }
 
@@ -92,22 +86,18 @@ class RegistrationController extends AbstractController
      * Valide le lien de confirmation par courrier électronique.
      * Définit User::isVerified=true et persiste.
      *
-     * @param Request $request
-     * @param TranslatorInterface $translator
-     * @param UserRepository $userRepository
-     * @return Response
      */
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(
         Request $request,
         TranslatorInterface $translator,
         UserRepository $userRepository,
-    ): Response
-    {
+    ): Response {
         $id = $request->query->get('id');
 
         if (null === $id) {
             $this->addFlash('danger', $this->messageGenerator->getErrorMessageEmailVerified());
+
             return $this->redirectToRoute('app_register');
         }
 
@@ -115,6 +105,7 @@ class RegistrationController extends AbstractController
 
         if (null === $user) {
             $this->addFlash('danger', $this->messageGenerator->getErrorMessageEmailVerified());
+
             return $this->redirectToRoute('app_register');
         }
 
