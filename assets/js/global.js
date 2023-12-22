@@ -52,10 +52,11 @@ words?.forEach(wrds => {
 
 const closed = document.getElementById('closed')
 const menu = document.getElementById('menu')
+const closedAlert = document.getElementById('closeAlertButton')
 
-const toggleClassDropdownMenuOnClick = (elmtId, className1, className2) => {
+const toggleClassDropdownMenuOnClick = (elmtId, elmtIdHidden, className1, className2) => {
     elmtId?.addEventListener('click', () => {
-        const dropdown = document.getElementById('dropdownMenu')
+        const dropdown = document.getElementById(elmtIdHidden)
         if(dropdown.classList.contains(className1)){
             dropdown.classList.remove(className1);
             dropdown.classList.add(className2);
@@ -63,5 +64,6 @@ const toggleClassDropdownMenuOnClick = (elmtId, className1, className2) => {
     });
 }
 
-toggleClassDropdownMenuOnClick(menu,'hidden','absolute');
-toggleClassDropdownMenuOnClick(closed,'absolute','hidden');
+toggleClassDropdownMenuOnClick(menu,'dropdownMenu','hidden','absolute');
+toggleClassDropdownMenuOnClick(closed,'dropdownMenu','absolute','hidden');
+toggleClassDropdownMenuOnClick(closedAlert,'alertContent', 'fixed', 'hidden')
