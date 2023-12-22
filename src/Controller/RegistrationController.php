@@ -120,7 +120,6 @@ class RegistrationController extends AbstractController
 
         $this->addFlash('success', $this->messageGenerator->getSuccessEmailIsVerified($user->getEmail()));
 
-        // Changer la redirection vers le login
-        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('app_login');
     }
 }
