@@ -29,12 +29,20 @@
 				</div>
 			</div>
 			<div class="hidden md:flex md:items-center md:space-x-6">
+				{% if app.user %}
+					<a href="{{ path('app_logout') }}" class="inline-flex items-center px-4 py-2 border
+				border-transparent
+				text-base
+				font-medium
+				 rounded-md text-white bg-red-600 hover:bg-red-700">Déconnexion</a>
+				{% else %}
 				<a href="{{ path('app_login') }}" class="text-base font-medium text-white hover:text-gray-300"> Log in </a>
 				<a href="{{ path('app_register') }}" class="inline-flex items-center px-4 py-2 border
 				border-transparent
 				text-base
 				font-medium
 				 rounded-md text-white bg-gray-600 hover:bg-gray-700">Inscription</a>
+				{% endif %}
 			</div>
 		</nav>
 	</div>
@@ -77,14 +85,22 @@
 					
 					<a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50">Company</a>
 				</div>
+				{% if app.user %}
+					<div class="mt-6 px-5">
+						<a href="{{ path('app_login') }}" class="block text-center w-full py-3 px-4 rounded-md shadow
+					bg-gradient-to-r
+					from-rose-300 to-red-400 text-white font-medium hover:from-rose-400 hover:to-red-600">Déconnexion</a>
+					</div>
+				{% else %}
 				<div class="mt-6 px-5">
 					<a href="{{ path('app_register') }}" class="block text-center w-full py-3 px-4 rounded-md shadow
 					bg-gradient-to-r
 					from-amber-200 to-orange-400 text-white font-medium hover:from-amber-400 hover:to-orange-500">Inscription</a>
 				</div>
 				<div class="mt-6 px-5">
-					<p class="text-center text-base font-medium text-gray-500">Existing customer? <a href="#" class="text-gray-900 hover:underline">Login</a></p>
+					<p class="text-center text-base font-medium text-gray-500">Existing customer? <a href="{{ path('app_login') }}" class="text-gray-900 hover:underline">Login</a></p>
 				</div>
+				{% endif %}
 			</div>
 		</div>
 	</div>

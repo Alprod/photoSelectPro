@@ -20,7 +20,7 @@
 	{% set ringClassColor = colors['danger'].ring %}
 {% endif %}
 
-<div aria-live="assertive" class="z-40 fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6
+<div id="alertContent" aria-live="assertive" class="z-40 fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6
 iphone:items-start">
 	<div class="w-full flex flex-col items-center space-y-4 iphone:items-end">
 		<!--
@@ -60,7 +60,7 @@ iphone:items-start">
 							{{ message }}
 						</p>
 					</div>
-					<div class="ml-4 flex-shrink-0 flex">
+					<div id="closeAlertButton" class="ml-4 flex-shrink-0 flex">
 						<button class="{{ bgClassColor }} rounded-md inline-flex text-gray-500 hover:text-gray-700
 						focus:outline-none focus:ring-2 focus:ring-offset-2 focus:{{ ringClassColor }}">
 							<span class="sr-only">Close</span>
