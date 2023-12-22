@@ -17,12 +17,11 @@ class AuthenticationFailedHandler implements AuthenticationFailureHandlerInterfa
         readonly private SecurityLogger $securityLogger,
         readonly private UrlGeneratorInterface $urlGenerator,
         readonly private MessageGeneratorService $messageGenerator
-    )
-    {
+    ) {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
@@ -30,10 +29,10 @@ class AuthenticationFailedHandler implements AuthenticationFailureHandlerInterfa
         $route = $this->urlGenerator->generate('app_login');
         $this->securityLogger->securityErrorLog('Tantative de connexion echoué', [
             'messege' => $exception->getMessage(),
-            'code' => $exception->getCode(),
-            'file' => $exception->getFile()
+            'code'    => $exception->getCode(),
+            'file'    => $exception->getFile(),
             ]);
-        /** @phpstan-ignore-next-line  */
+        /* @phpstan-ignore-next-line */
         $session->getFlashBag()->add('danger', $this->messageGenerator->getMessageFailureLogin());
 
         return new RedirectResponse($route);

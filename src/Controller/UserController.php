@@ -13,6 +13,7 @@ class UserController extends AbstractController
     public function index(User $id): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
+
         return $this->render('user/index.html.twig', [
             'controller_name' => 'UserController',
         ]);
