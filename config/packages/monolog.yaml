@@ -32,7 +32,7 @@ when@dev:
                 type: rotating_file
                 path: "%kernel.logs_dir%/security/secutity_%kernel.environment%.log"
                 channels: [ security ]
-                level: error
+                level: info
                 max_files: 15
                 formatter: monolog.formatter.session_request
             main:
