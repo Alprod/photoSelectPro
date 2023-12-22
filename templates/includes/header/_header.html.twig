@@ -29,12 +29,12 @@
 				</div>
 			</div>
 			<div class="hidden md:flex md:items-center md:space-x-6">
-				<a href="#" class="text-base font-medium text-white hover:text-gray-300"> Log in </a>
+				<a href="{{ path('app_login') }}" class="text-base font-medium text-white hover:text-gray-300"> Log in </a>
 				<a href="{{ path('app_register') }}" class="inline-flex items-center px-4 py-2 border
 				border-transparent
 				text-base
 				font-medium
-				 rounded-md text-white bg-gray-600 hover:bg-gray-700"> Start free trial </a>
+				 rounded-md text-white bg-gray-600 hover:bg-gray-700">Inscription</a>
 			</div>
 		</nav>
 	</div>
@@ -49,7 +49,7 @@
 		From: "opacity-100 scale-100"
 		To: "opacity-0 scale-95"
 	-->
-	<div id="dropdownMenu" class="hidden top-0 inset-x-0 p-2 transition-all ease-in-out duration-300 transform origin-top">
+	<div id="dropdownMenu" class="hidden md:hidden top-0 inset-x-0 p-2 transition-all ease-in-out duration-300 transform origin-top">
 		<div class="rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
 			<div class="px-5 pt-4 flex items-center justify-between">
 				<div>
