@@ -43,4 +43,9 @@ class MessageGeneratorService
     {
         return 'Bienvenue ! '.$value.' Vous êtes maintenant connecté(e).';
     }
+
+    public function getMessageLogout(): string
+    {
+        return "Merci pour votre participation j'éspère vous revoir bientôt";
+    }
 }
