@@ -33,4 +33,14 @@ class MessageGeneratorService
     {
         return 'Cet élément doit être fourni par la partie concernée, que ce soit une entreprise, un formateur ou toute autre source appropriée.';
     }
+
+    public function getMessageFailureLogin(): string
+    {
+        return "Désolé, mais la connexion a échoué. Veuillez vérifier vos informations d'identification et réessayer.";
+    }
+
+    public function getMessageSuccessLogin(string $value): string
+    {
+        return 'Bienvenue ! '.$value.' Vous êtes maintenant connecté(e).';
+    }
 }

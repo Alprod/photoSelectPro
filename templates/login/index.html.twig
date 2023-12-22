@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }}|Connexion{% endblock %}
+
+{% block body %}
+    <section class="relative bg-white py-2 iphone:py-6 xs:py-4 lg:py-14">
+        <div class="max-w-5xl mx-auto py-20 sm:px-6 lg:px-8">
+            <h1 class="h1 text-center m-20">Connexion</h1>
+            {% if error %}
+                <div class="max-w-lg mx-auto border rounded-md bg-danger-100 text-danger-700 p-4 ">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            <form action="{{ path('app_login') }}" method="post" class="max-w-2xl mx-auto iphone:p-5 md:p-8">
+                <div class="py-3">
+                    <label for="username">Email</label>
+                    <input type="text" name="_username" id="username" value="{{ last_username }}"/>
+                </div>
+                <div class="py-3">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" name="_password" id="password">
+                </div>
+                <input type="hidden" name="_target_path" value="{{ path('app_home') }}">
+                <input type="hidden" name="_crsf_token" value="{{ csrf_token("authenticate") }}">
+                
+                <button type="submit" class="btn-primary">Connexion</button>
+            </form>
+        </div>
+    </section>
+{% endblock %}
