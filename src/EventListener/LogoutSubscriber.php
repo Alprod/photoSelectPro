@@ -13,12 +13,11 @@ class LogoutSubscriber implements EventSubscriberInterface
     public function __construct(
         readonly private UrlGeneratorInterface $urlGenerator,
         readonly private MessageGeneratorService $messageGenerator
-    )
-    {
+    ) {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getSubscribedEvents(): array
     {
@@ -29,7 +28,7 @@ class LogoutSubscriber implements EventSubscriberInterface
     {
         $session = $event->getRequest()->getSession();
 
-        /** @phpstan-ignore-next-line */
+        /* @phpstan-ignore-next-line */
         $session->getFlashBag()->add('success', $this->messageGenerator->getMessageLogout());
         $response = new RedirectResponse(
             $this->urlGenerator->generate('app_home'),

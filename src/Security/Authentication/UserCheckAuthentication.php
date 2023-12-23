@@ -17,25 +17,26 @@ readonly class UserCheckAuthentication implements UserCheckerInterface
         private MessageGeneratorService $messageGenerator,
         private RequestStack $requestStack,
         private PasswordHasherFactoryInterface $hasherFactory
-
-    )
-    {
+    ) {
     }
 
     public function checkPreAuth(UserInterface $user): void
     {
-        if (!$user instanceof AppUser){
+        if (!$user instanceof AppUser) {
             return;
         }
-        if (!$user->isVerified()){
+
+        if (!$user->isVerified()) {
             throw new AccountNotVerifeidAuthenticationException($this->messageGenerator->getErrorMessageEmailVerified());
         }
 
         $requestPassword = $this->requestStack->getCurrentRequest()->request->get('_password');
-        if('' === $requestPassword) {
+
+        if ('' === $requestPassword) {
             throw new BadCredentialsException($this->messageGenerator->getMessageFailureEmptyLogin());
         }
-        if(!$this->hasherFactory->getPasswordHasher($user)->verify($user->getPassword(), $requestPassword)) {
+
+        if (!$this->hasherFactory->getPasswordHasher($user)->verify($user->getPassword(), $requestPassword)) {
             throw new BadCredentialsException($this->messageGenerator->getErrorAuthenticationLogin());
         }
     }

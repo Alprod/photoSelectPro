@@ -41,7 +41,7 @@ class MessageGeneratorService
 
     public function getMessageFailureEmptyLogin(): string
     {
-        return "Veuillez vous assurer que certains champs ne sont pas laissés vides afin de garantir une soumission complète et précise du formulaire.";
+        return 'Veuillez vous assurer que certains champs ne sont pas laissés vides afin de garantir une soumission complète et précise du formulaire.';
     }
 
     public function getErrorAuthenticationLogin(): string

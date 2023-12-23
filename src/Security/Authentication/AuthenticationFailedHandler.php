@@ -2,7 +2,6 @@
 
 namespace App\Security\Authentication;
 
-use App\Exception\AccountNotVerifeidAuthenticationException;
 use App\Logger\SecurityLogger;
 use App\Service\MessageGeneratorService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,15 +27,15 @@ readonly class AuthenticationFailedHandler implements AuthenticationFailureHandl
     {
         $session = $request->getSession();
         $route = $this->urlGenerator->generate('app_login');
-            $this->securityLogger->securityErrorLog('Tantative de connexion echoué', [
-                'messege' => $exception->getMessage(),
-                'code'    => $exception->getCode(),
-                'file'    => $exception->getFile(),
-            ]);
+        $this->securityLogger->securityErrorLog('Tantative de connexion echoué', [
+            'messege' => $exception->getMessage(),
+            'code'    => $exception->getCode(),
+            'file'    => $exception->getFile(),
+        ]);
 
-            /* @phpstan-ignore-next-line */
-            $session->getFlashBag()->add('danger', $this->messageGenerator->getMessageFailureLogin($exception->getMessage()));
+        /* @phpstan-ignore-next-line */
+        $session->getFlashBag()->add('danger', $this->messageGenerator->getMessageFailureLogin($exception->getMessage()));
 
-            return new RedirectResponse($route);
+        return new RedirectResponse($route);
     }
 }

@@ -28,9 +28,11 @@ readonly class AuthenticationSuccessHandler implements AuthenticationSuccessHand
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): ?Response
     {
         $userToken = $token->getUser();
-        $user = $this->userRepo->findOneBy(['id'=> $userToken?->getId()]);
-        if(!$user) {
+        $user = $this->userRepo->findOneBy(['id' => $userToken?->getId()]);
+
+        if (!$user) {
             $loginPage = $this->route->generate('app_login');
+
             return new RedirectResponse($loginPage);
         }
 

@@ -122,7 +122,7 @@ class RegistrationController extends AbstractController
         return $this->redirectToRoute('app_login');
     }
 
-    #[Route('/renderVerfiedEmail/{email}', name: "app_render_verif_email")]
+    #[Route('/renderVerfiedEmail/{email}', name: 'app_render_verif_email')]
     public function renderAfterRegister(string $email): Response
     {
         return $this->render('registration/render_verif_email.html.twig', ['email' => $email]);

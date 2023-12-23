@@ -26,7 +26,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'label'       => 'Ok avec les terms',
-                'label_attr' => $labelAttr,
+                'label_attr'  => $labelAttr,
                 'mapped'      => false,
                 'constraints' => [
                     new IsTrue([
@@ -36,7 +36,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('plainPassword', PasswordType::class, [
                 'label'       => 'Mot de passe',
-                'label_attr' => $labelAttr,
+                'label_attr'  => $labelAttr,
                 'mapped'      => false,
                 'attr'        => ['autocomplete' => 'new-password'],
                 'constraints' => [
@@ -53,7 +53,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('refClientNumber', TextType::class, [
                 'label'       => 'Référence',
-                'label_attr' => $labelAttr,
+                'label_attr'  => $labelAttr,
                 'mapped'      => false,
                 'required'    => false,
                 'constraints' => [
