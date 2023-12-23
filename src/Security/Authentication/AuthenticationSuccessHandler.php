@@ -3,6 +3,7 @@
 namespace App\Security\Authentication;
 
 use App\Logger\SecurityLogger;
+use App\Repository\UserRepository;
 use App\Service\MessageGeneratorService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,12 +12,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 
-class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterface
+readonly class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterface
 {
     public function __construct(
-        readonly private SecurityLogger $securityLogger,
-        readonly private UrlGeneratorInterface $route,
-        readonly private MessageGeneratorService $messageGenerator
+        private SecurityLogger $securityLogger,
+        private UrlGeneratorInterface $route,
+        private MessageGeneratorService $messageGenerator,
+        private UserRepository $userRepo
     ) {
     }
 
@@ -25,11 +27,19 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): ?Response
     {
-        $user = $token->getUser();
-        $this->securityLogger->securityInfoLog('Connexion réussi : '.$user?->getUserIdentifier());
+        $userToken = $token->getUser();
+        $user = $this->userRepo->findOneBy(['id' => $userToken?->getId()]);
+
+        if (!$user) {
+            $loginPage = $this->route->generate('app_login');
+
+            return new RedirectResponse($loginPage);
+        }
+
+        $this->securityLogger->securityInfoLog('Connexion réussi : '.$user->getEmail());
 
         /* @phpstan-ignore-next-line */
-        $request->getSession()->getFlashBag()->add('success', $this->messageGenerator->getMessageSuccessLogin($user?->getUserIdentifier()));
+        $request->getSession()->getFlashBag()->add('success', $this->messageGenerator->getMessageSuccessLogin($user->getEmail()));
 
         $homepage = $this->route->generate('app_home');
 

@@ -73,8 +73,7 @@ class RegistrationController extends AbstractController
                     ->subject('Veuillez confirmer votre email')
                     ->htmlTemplate('emails/confirmation_email.html.twig'));
 
-            // changer pour une page qui indique à l'utilisateur de Check sa boite mail
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_render_verif_email', ['email' => $user->getEmail()]);
         }
 
         return $this->render('registration/register.html.twig', [
@@ -121,5 +120,11 @@ class RegistrationController extends AbstractController
         $this->addFlash('success', $this->messageGenerator->getSuccessEmailIsVerified($user->getEmail()));
 
         return $this->redirectToRoute('app_login');
+    }
+
+    #[Route('/renderVerfiedEmail/{email}', name: 'app_render_verif_email')]
+    public function renderAfterRegister(string $email): Response
+    {
+        return $this->render('registration/render_verif_email.html.twig', ['email' => $email]);
     }
 }

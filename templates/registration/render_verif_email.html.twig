@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+{% block header%}{% endblock %}
+{% block body %}
+<div class="h-screen flex items-stretch">
+	<div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 self-center">
+		<div class="max-w-7xl mx-auto">
+			<div class="bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200">
+				<div class="px-4 py-5 sm:px-6">
+					<h1 class="h2 text-center">Photo Select Pro</h1>
+				</div>
+				<div class="px-4 py-5 sm:p-6">
+					<p class="text-center fonts-size">
+						Bienvenue chez nous ! 🌟 Avant de plonger dans l'aventure,
+						<br/> N'oublie pas de vérifier ton e-mail <span class="font-bold">{{ email }}</span> pour valider ton inscription.<br/>
+						Un lien t'attend dans ta boîte de réception.
+						<!--- Si tu ne le trouves pas, clique simplement sur "Renvoyer le mail de confirmation" sur notre site.--->
+						
+						Merci de faire partie de ce parcours ! <br/>
+						À bientôt sur Photo Select Pro !<br/>
+						
+						Amicalement,
+					</p>
+				</div>
+			</div>
+			<div class="m-6 btn-primary max-w-xs mx-auto iphone:max-w-sm sm:max-w-md lg:max-w-lg">
+				<a href="{{ path('app_home') }}">Retour home page</a>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

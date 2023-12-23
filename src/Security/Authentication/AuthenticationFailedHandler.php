@@ -11,12 +11,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
 
-class AuthenticationFailedHandler implements AuthenticationFailureHandlerInterface
+readonly class AuthenticationFailedHandler implements AuthenticationFailureHandlerInterface
 {
     public function __construct(
-        readonly private SecurityLogger $securityLogger,
-        readonly private UrlGeneratorInterface $urlGenerator,
-        readonly private MessageGeneratorService $messageGenerator
+        private SecurityLogger $securityLogger,
+        private UrlGeneratorInterface $urlGenerator,
+        private MessageGeneratorService $messageGenerator
     ) {
     }
 
@@ -31,9 +31,10 @@ class AuthenticationFailedHandler implements AuthenticationFailureHandlerInterfa
             'messege' => $exception->getMessage(),
             'code'    => $exception->getCode(),
             'file'    => $exception->getFile(),
-            ]);
+        ]);
+
         /* @phpstan-ignore-next-line */
-        $session->getFlashBag()->add('danger', $this->messageGenerator->getMessageFailureLogin());
+        $session->getFlashBag()->add('danger', $this->messageGenerator->getMessageFailureLogin($exception->getMessage()));
 
         return new RedirectResponse($route);
     }

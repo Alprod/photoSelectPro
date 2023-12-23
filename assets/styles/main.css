@@ -55,7 +55,7 @@
     }
 
     .fonts-size {
-        @apply text-sm iphone:text-lg xs:text-xl fullHD:text-3xl
+        @apply text-sm iphone:text-lg xs:text-xl fullHD:text-2xl
     }
 
     .btn-primary {

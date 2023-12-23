@@ -23,6 +23,7 @@ security:
                 check_path: app_login
                 success_handler: App\Security\Authentication\AuthenticationSuccessHandler
                 failure_handler: App\Security\Authentication\AuthenticationFailedHandler
+            user_checker: App\Security\Authentication\UserCheckAuthentication
         secured_area:
             form_login:
                 enable_csrf: true
