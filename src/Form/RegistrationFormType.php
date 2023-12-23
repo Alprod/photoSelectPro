@@ -18,14 +18,15 @@ class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $labelAttr = ['class' => 'block text-base text-gray-700'];
         $builder
             ->add('email', EmailType::class, [
                 'label'      => 'Email',
-                'label_attr' => ['class' => 'block font-bold text-gray-700'],
+                'label_attr' => $labelAttr,
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'label'       => 'Ok avec les terms',
-                'label_attr'  => ['class' => 'block text-base text-gray-700'],
+                'label_attr' => $labelAttr,
                 'mapped'      => false,
                 'constraints' => [
                     new IsTrue([
@@ -35,6 +36,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('plainPassword', PasswordType::class, [
                 'label'       => 'Mot de passe',
+                'label_attr' => $labelAttr,
                 'mapped'      => false,
                 'attr'        => ['autocomplete' => 'new-password'],
                 'constraints' => [
@@ -51,6 +53,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('refClientNumber', TextType::class, [
                 'label'       => 'Référence',
+                'label_attr' => $labelAttr,
                 'mapped'      => false,
                 'required'    => false,
                 'constraints' => [

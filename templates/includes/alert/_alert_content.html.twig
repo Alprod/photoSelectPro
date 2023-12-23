@@ -14,7 +14,7 @@
 	{% set bgClassColor = colors['success'].bg %}
 	{% set txtClassColor = colors['success'].txt %}
 	{% set ringClassColor = colors['success'].ring %}
-{% elseif label == 'danger' %}
+{% elseif label == 'danger' or label == 'verify_email_error' %}
 	{% set bgClassColor = colors['danger'].bg %}
 	{% set txtClassColor = colors['danger'].txt %}
 	{% set ringClassColor = colors['danger'].ring %}
@@ -61,8 +61,7 @@ iphone:items-start">
 						</p>
 					</div>
 					<div id="closeAlertButton" class="ml-4 flex-shrink-0 flex">
-						<button class="{{ bgClassColor }} rounded-md inline-flex text-gray-500 hover:text-gray-700
-						focus:outline-none focus:ring-2 focus:ring-offset-2 focus:{{ ringClassColor }}">
+						<button class="{{ bgClassColor }} rounded-md inline-flex text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 {{ 'focus:' ~ ringClassColor }} {{ 'hover:' ~ ringClassColor }}">
 							<span class="sr-only">Close</span>
 							<!-- Heroicon name: solid/x -->
 							<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

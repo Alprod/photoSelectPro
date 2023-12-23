@@ -26,7 +26,7 @@ class MessageGeneratorService
 
     public function getErrorMessageEmailVerified(): string
     {
-        return "Nous nous excusons, mais nous n'avons pas réussi à vous localiser. Veuillez vérifier les détails que vous avez fournis et réessayer, ou n'hésitez pas à contacter notre équipe d'assistance en ligne pour obtenir de l'aide immédiate.";
+        return "Nous nous excusons, mais nous n'avons pas réussi à vous localiser. Veuillez vérifier votre boite mail afin de validé votre email et réessayer.";
     }
 
     public function getMessageFailure(): string
@@ -34,9 +34,19 @@ class MessageGeneratorService
         return 'Cet élément doit être fourni par la partie concernée, que ce soit une entreprise, un formateur ou toute autre source appropriée.';
     }
 
-    public function getMessageFailureLogin(): string
+    public function getMessageFailureLogin(string $message): string
     {
-        return "Désolé, mais la connexion a échoué. Veuillez vérifier vos informations d'identification et réessayer.";
+        return $message;
+    }
+
+    public function getMessageFailureEmptyLogin(): string
+    {
+        return "Veuillez vous assurer que certains champs ne sont pas laissés vides afin de garantir une soumission complète et précise du formulaire.";
+    }
+
+    public function getErrorAuthenticationLogin(): string
+    {
+        return "La saisie ne correspond pas aux informations attendues. Veuillez vérifier vos données d'accès";
     }
 
     public function getMessageSuccessLogin(string $value): string
