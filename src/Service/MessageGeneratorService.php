@@ -58,4 +58,9 @@ class MessageGeneratorService
     {
         return "Merci pour votre participation j'éspère vous revoir bientôt";
     }
+
+    public function getEmailIsVerified(string $email): string
+    {
+        return 'Merci, mais '.$email.' est déjà Vérifier';
+    }
 }
