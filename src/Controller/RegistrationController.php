@@ -108,7 +108,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
-        if (true === $user->isVerified()){
+        if (true === $user->isVerified()) {
             $this->addFlash('success', $this->messageGenerator->getEmailIsVerified($user->getEmail()));
 
             return $this->redirectToRoute('app_home');

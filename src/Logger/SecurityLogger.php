@@ -4,9 +4,9 @@ namespace App\Logger;
 
 use Psr\Log\LoggerInterface;
 
-class SecurityLogger
+readonly class SecurityLogger
 {
-    public function __construct(readonly private LoggerInterface $securityLogger)
+    public function __construct(private LoggerInterface $securityLogger)
     {
     }
 
