@@ -67,3 +67,11 @@ const toggleClassDropdownMenuOnClick = (elmtId, elmtIdHidden, className1, classN
 toggleClassDropdownMenuOnClick(menu,'dropdownMenu','hidden','absolute');
 toggleClassDropdownMenuOnClick(closed,'dropdownMenu','absolute','hidden');
 toggleClassDropdownMenuOnClick(closedAlert,'alertContent', 'fixed', 'hidden')
+
+const btnProfilModalForm = document.getElementById('btnProfilModalForm')
+const btnClosedModalProfilForm = document.getElementById('btnClosedModalProfilForm');
+const btnMajbtnProfilModalForm = document.getElementById('MajbtnProfilModalForm')
+toggleClassDropdownMenuOnClick(btnProfilModalForm,'modalIdentityUser', 'hidden', 'fixed')
+toggleClassDropdownMenuOnClick(btnClosedModalProfilForm,'modalIdentityUser', 'fixed', 'hidden')
+toggleClassDropdownMenuOnClick(btnMajbtnProfilModalForm,'modalIdentityUser', 'hidden', 'fixed')
+

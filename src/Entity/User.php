@@ -49,6 +49,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private bool $isVerified = false;
 
+    #[ORM\OneToOne(mappedBy: 'userIdentity', cascade: ['persist', 'remove'])]
+    private ?Identity $identity = null;
+
     public function __construct()
     {
         $this->firstBinomials = new ArrayCollection();
@@ -223,6 +226,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getIdentity(): ?Identity
+    {
+        return $this->identity;
+    }
+
+    public function setIdentity(?Identity $identity): static
+    {
+        // unset the owning side of the relation if necessary
+        if (null === $identity && null !== $this->identity) {
+            $this->identity->setUserIdentity(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if (null !== $identity && $identity->getUserIdentity() !== $this) {
+            $identity->setUserIdentity($this);
+        }
+
+        $this->identity = $identity;
 
         return $this;
     }

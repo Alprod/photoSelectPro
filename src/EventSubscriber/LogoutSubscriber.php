@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventListener;
+namespace App\EventSubscriber;
 
 use App\Service\MessageGeneratorService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -8,11 +8,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
 
-class LogoutSubscriber implements EventSubscriberInterface
+readonly class LogoutSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        readonly private UrlGeneratorInterface $urlGenerator,
-        readonly private MessageGeneratorService $messageGenerator
+        private UrlGeneratorInterface $urlGenerator,
+        private MessageGeneratorService $messageGenerator
     ) {
     }
 

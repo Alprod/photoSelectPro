@@ -22,7 +22,6 @@ parameters:
             messages:
                 - '#Call to an undefined method [a-zA-Z0-9\\_]+::getId\(\)#'
                 - '#Call to an undefined method [a-zA-Z0-9\\_]+::getEmail\(\)#'
+                - '#Call to an undefined method [a-zA-Z0-9\\_]+::getFlashBag\(\)#'
     symfony:
         containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
-    scanDirectories:
-        - var/cache/dev/Symfony/Config
