@@ -63,4 +63,19 @@ class MessageGeneratorService
     {
         return 'Merci, mais '.$email.' est déjà Vérifier';
     }
+
+    public function getUpdatePassword(): string
+    {
+        $message = [
+            "Félicitations ! Votre mot de passe a été mis à jour avec succès.",
+            "Bravo ! Vous venez de sécuriser votre compte en mettant à jour votre mot de passe.",
+            "Excellent travail ! Votre mot de passe a été changé avec succès. Votre compte est maintenant plus sécurisé.",
+            "Succès ! Vous avez accompli la mise à jour de votre mot de passe avec succès. Votre compte est entre de bonnes mains.",
+            "C'est officiel ! Votre mot de passe a été modifié avec succès. Merci de veiller à la sécurité de votre compte.",
+        ];
+
+        $index = array_rand($message);
+
+        return $message[$index];
+    }
 }
