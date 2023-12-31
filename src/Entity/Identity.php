@@ -31,6 +31,9 @@ class Identity
     #[ORM\OneToOne(inversedBy: 'identity', cascade: ['persist', 'remove'])]
     private ?User $userIdentity = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $avatarFilename = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +107,18 @@ class Identity
     public function setUserIdentity(?User $userIdentity): static
     {
         $this->userIdentity = $userIdentity;
+
+        return $this;
+    }
+
+    public function getAvatarFilename(): ?string
+    {
+        return $this->avatarFilename;
+    }
+
+    public function setAvatarFilename(?string $avatarFilename): static
+    {
+        $this->avatarFilename = $avatarFilename;
 
         return $this;
     }
