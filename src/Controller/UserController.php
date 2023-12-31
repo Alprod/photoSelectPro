@@ -9,12 +9,17 @@ use App\Form\IdentityUserType;
 use App\Repository\UserRepository;
 use App\Service\MessageGeneratorService;
 use App\Service\TimingTaskService;
+use App\Service\Uploader\AvatarUploadFile;
 use Doctrine\ORM\EntityManagerInterface;
+use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class UserController extends AbstractController
 {
@@ -25,8 +30,11 @@ class UserController extends AbstractController
     ) {
     }
 
+    /**
+     * @throws RandomException
+     */
     #[Route('/profile/{id}', name: 'app_user')]
-    public function index(User $id, Request $request): Response
+    public function index(User $id, Request $request, AvatarUploadFile $avatarUploadFile): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Veuillez vous connectez si vous souhaitez avoir accès au contenu');
         $repo = $this->entity->getRepository(Identity::class);
@@ -40,6 +48,13 @@ class UserController extends AbstractController
 
         if ($identityForm->isSubmitted() && $identityForm->isValid()) {
             $newIdentity->setUserIdentity($id);
+            /** @var UploadedFile $avatarFile */
+            $avatarFile = $identityForm->get('avatar')->getData();
+
+            if($avatarFile) {
+                $newFilename = $avatarUploadFile->upload($avatarFile, 'avatar', 'app_user', [ 'id' => $id->getId() ]);
+                $newIdentity->setAvatarFilename($newFilename);
+            }
 
             $this->timingTask->timingEntityManager('Add new identity User', Identity::class, $newIdentity);
 

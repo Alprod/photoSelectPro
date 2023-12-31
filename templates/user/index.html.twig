@@ -9,7 +9,7 @@
 			<p>Bienvenue sur PhotoSelect Pro ici, vous retrouverez toutes les informations concernant votre parcours de selection de photo le de cette formation</p>
 		</div>
 		
-			<div class="mx-8 p-4 iphone:p-8">
+		<div class="mx-8 p-4 iphone:p-8">
 				{% if user.identity is empty and user.identity is defined %}
 					<p>Actuellement, il semble que vous n'ayez ajouté aucune information complémentaire à votre profil. Nous vous encourageons à personnaliser votre expérience en partageant davantage sur vous-même. Explorez les options de profil pour ajouter des détails et rendre votre expérience plus enrichissante pour vous et les autres utilisateurs.</p>
 					<button id="btnProfilModalForm" class="btn-primary">Info Compélementaire</button>
@@ -20,10 +20,10 @@
 								<div class="flex-1 min-w-0">
 									<!-- Profile -->
 									<div class="flex items-center">
-										<img class="hidden h-16 w-16 rounded-full sm:block" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.6&w=256&h=256&q=80" alt="">
+										<img class="hidden h-16 w-16 rounded-full sm:block" src="{{ asset('images/uploads/avatars/' ~ user.identity.avatarFilename) }}" alt="avatar image" />
 										<div>
 											<div class="flex items-center">
-												<img class="h-16 w-16 rounded-full sm:hidden" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.6&w=256&h=256&q=80" alt="">
+												<img class="h-16 w-16 rounded-full sm:hidden" src="{{ asset('images/uploads/avatars/' ~ user.identity.avatarFilename) }}" alt="avatar image" />
 												<h1 class="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:leading-9 sm:truncate">Bienvenue à toi, {{ user.identity.firstname ~ ' ' ~ user.identity.lastname }}</h1>
 											</div>
 											<dl class="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
@@ -84,6 +84,10 @@
 					</div>
 				{% endif %}
 			</div>
+		<div class="mx-8 p-4 iphone:p-8">
+			<h2></h2>
+			Contenu parcours
+		</div>
 	</section>
 	
 	
@@ -107,6 +111,23 @@
 						<div class="p-8">
 							{{ form_row(identityForm.firstname) }}
 							{{ form_row(identityForm.lastname) }}
+							<div class="my-8">
+								{{ form_label(identityForm.avatar) }}
+								{{ form_widget(identityForm.avatar) }}
+								<span class="block pt-4 text-sm text-gray-700">{{ form_help(identityForm.avatar) }}</span>
+								<span class="block pt-4 text-sm text-danger-700">{{ form_errors(identityForm.avatar) }}</span>
+								{% if(user.identity.avatarFilename) is not null %}
+									<div class="flex">
+										<div class="mr-4 flex-shrink-0 self-center">
+											<img class="h-14 w-14 rounded-md" src="{{ asset('images/uploads/avatars/' ~ user.identity.avatarFilename) }}" alt="avatar image">
+										</div>
+										<div>
+											<h4 class="text-lg">Votre avatar</h4>
+											<p class="mt-1">{{ user.identity.avatarFilename }}</p>
+										</div>
+									</div>
+								{% endif %}
+							</div>
 							{{ form_row(identityForm.gender) }}
 							{{ form_row(identityForm.service) }}
 							{{ form_row(identityForm.job) }}
