@@ -49,7 +49,7 @@ class UserController extends AbstractController
             /** @var UploadedFile $avatarFile */
             $avatarFile = $identityForm->get('avatar')->getData();
 
-            /** @phpstan-ignore-next-line */
+            /* @phpstan-ignore-next-line */
             if ($avatarFile) {
                 $newFilename = $avatarUploadFile->upload($avatarFile, 'avatar', 'app_user', ['id' => $id->getId()]);
                 $newIdentity->setAvatarFilename($newFilename);
