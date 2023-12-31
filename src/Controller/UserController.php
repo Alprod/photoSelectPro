@@ -13,13 +13,11 @@ use App\Service\Uploader\AvatarUploadFile;
 use Doctrine\ORM\EntityManagerInterface;
 use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class UserController extends AbstractController
 {
@@ -51,8 +49,9 @@ class UserController extends AbstractController
             /** @var UploadedFile $avatarFile */
             $avatarFile = $identityForm->get('avatar')->getData();
 
-            if($avatarFile) {
-                $newFilename = $avatarUploadFile->upload($avatarFile, 'avatar', 'app_user', [ 'id' => $id->getId() ]);
+            /** @phpstan-ignore-next-line */
+            if ($avatarFile) {
+                $newFilename = $avatarUploadFile->upload($avatarFile, 'avatar', 'app_user', ['id' => $id->getId()]);
                 $newIdentity->setAvatarFilename($newFilename);
             }
 

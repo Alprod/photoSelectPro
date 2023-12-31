@@ -17,8 +17,7 @@ readonly class FileUploader
         private SluggerInterface $slugger,
         private SecurityLogger $securityLogger,
         private UrlGeneratorInterface $urlGenerator
-    )
-    {
+    ) {
     }
 
     /**
@@ -31,13 +30,15 @@ readonly class FileUploader
         $bytes = random_bytes(4);
         $uniqId = bin2hex($bytes);
         $newFilemame = $safeFilename.'-'.$prefix.'_'.$uniqId.'.'.$file->guessExtension();
+
         try {
             $file->move($this->getTargetDirectory(), $newFilemame);
-        }catch (FileException $f){
+        } catch (FileException $f) {
             $this->securityLogger->securityErrorLog('Erreur de deplacement du ficher', [
                 'message' => $f->getMessage(),
-                'class' => __CLASS__,
+                'class'   => __CLASS__,
             ]);
+
             return new RedirectResponse($this->urlGenerator->generate($route, $params));
         }
 
@@ -48,5 +49,4 @@ readonly class FileUploader
     {
         return $this->targetDirectory;
     }
-
 }
