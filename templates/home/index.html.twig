@@ -3,91 +3,85 @@
 {% block title %}PhotoSelectPRO{% endblock %}
 
 {% block body %}
-<section class="relative bg-white py-2 iphone:py-6 xs:py-4 lg:py-14">
-    <div class="mx-auto max-w-7xl w-full pt-16 pb-20 text-center lg:py-48 lg:text-left">
-        <div class="px-4 lg:w-1/2 sm:px-8 xl:pr-16">
-            <h1 class="h4 tracking-tight font-extrabold text-gray-900">
-                <span class="block ">En binôme</span>
-                <span class="block text-amber-300 ">Pré-Selection de vos photos</span>
-            </h1>
-            <p class="mt-3 max-w-md mx-auto text-lg text-gray-500 sm:text-xl md:mt-5 md:max-w-3xl">
-                Vous avez la possibilité de choisir parmi une pré-sélection soigneusement élaborée de photos d'aménagement et/ou de mobilier. Cette sélection peut être effectuée de manière intuitive, en suivant vos préférences personnelles, ou bien en définissant des critères spécifiques qui correspondent à vos besoins et à votre style.
-            </p>
-        </div>
-    </div>
-    <div class="relative w-full h-64 lg:absolute lg:inset-y-0 lg:right-0 xs:h-72 md:h-96 lg:w-1/2 lg:h-full">
-        <img class="absolute inset-0 w-full h-full object-cover" src="{{ asset('images/binome.jpg') }}" alt="">
-    </div>
-</section>
-
-<div id="wordCloud"
-     class="hidden justify-center flex-wrap max-w-8xl mx-auto align-center gap-8 leading-8 text-gray-300/70 bold py-36
-     lg:flex">
-</div>
-
-<div class="bg-white py-2 iphone:py-6 xs:py-4 lg:py-14">
-	<div class="relative w-full">
-		<div class="relative  py-24 px-8 bg-slate-800 shadow-2xl overflow-hidden lg:px-16 lg:grid lg:grid-cols-2
-		lg:gap-x-8">
-			<div class="absolute inset-0 opacity-70 filter saturate-0 mix-blend-multiply">
-				<ul role="list" class="grid grid-cols-1 gap-x-4 gap-y-8 p-8 iphone:grid-cols-1 xs:grid-cols-1
-				xs:gap-x-8
-				lg:grid-cols-3
-				xl:gap-x-8">
-					<li class="relative">
-						<div class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
-							<img src="{{ asset('images/daniel-j-schwarz-7QQoHJ5vV9Y-unsplash.jpg') }}" alt="" class="w-full h-full object-cover">
-						</div>
-					</li>
-					<li class="relative">
-						<div class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 origin-center
-						rotate-2
-						focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
-							<img src="{{ asset('images/milad-fakurian-PRYpUx018P4-unsplash.jpg') }}" alt="" class="w-full h-full object-cover">
-						</div>
-					</li>
-					<li class="relative">
-						<div class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
-							<img src="{{ asset('images/fabienne-campello-YDFC6EqxxeE-unsplash.jpg') }}" alt="" class="w-full h-full object-cover">
-						</div>
-					</li>
-					<li class="relative">
-						<div class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 origin-center -rotate-3
-						focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
-							<img src="{{ asset('images/lawrence-chismorie-60JVrJ95Vds-unsplash.jpg') }}" alt="" class="w-full h-full object-cover">
-						</div>
-					</li>
-					<li class="relative">
-						<div class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
-							<img src="{{ asset('images/toa-heftiba-FV3GConVSss-unsplash.jpg') }}" alt="" class="w-full h-full object-cover">
-						</div>
-					</li>
-					<li class="relative">
-						<div class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 origin-center rotate-6
-						focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
-							<img src="{{ asset('images/nastuh-abootalebi-rSpMla5RItA-unsplash.jpg') }}" alt="" class="w-full h-full object-cover">
-						</div>
-					</li>
-					
-					<!-- More files... -->
-				</ul>
+	<section class="relative bg-white py-2 iphone:py-6 xs:py-4 lg:py-14">
+		<div class="mx-auto max-w-7xl w-full pt-16 pb-20 text-center lg:py-48 lg:text-left">
+			<div class="px-4 lg:w-1/2 sm:px-8 xl:pr-16">
+				<h1 class="h4 tracking-tight font-extrabold text-gray-900">
+					<span class="block ">En binôme</span>
+					<span class="block text-amber-300 ">Pré-Selection de vos photos</span>
+				</h1>
+				<p class="mt-3 max-w-md mx-auto text-lg text-gray-500 sm:text-xl md:mt-5 md:max-w-3xl">
+					Vous avez la possibilité de choisir parmi une pré-sélection soigneusement élaborée de photos d'aménagement et/ou de mobilier. Cette sélection peut être effectuée de manière intuitive, en suivant vos préférences personnelles, ou bien en définissant des critères spécifiques qui correspondent à vos besoins et à votre style.
+				</p>
 			</div>
-			<div class="relative lg:col-span-1">
-				<blockquote class="my-14 iphone:my-24 xs:my-36 text-white">
-					<h3 class="h3 tracking-tight font-extrabold text-white py-8">
-						<span class="block ">Notre Galerie</span>
-						<span class="block text-amber-300 ">De Photo</span>
-					</h3>
-					<p class="italic text-2xl iphone:text-2xl xs:text-xl">Explorez notre galerie diversifiée et
-						laissez-vous
-						guider
-						par votre inspiration, ou utilisez des filtres pour affiner votre recherche en fonction de vos critères précis. Nous avons pris soin de rassembler une gamme variée d'images afin de vous offrir une expérience de sélection personnalisée et adaptée à vos goûts uniques.</p>
-				</blockquote>
+		</div>
+		<div class="relative w-full h-64 lg:absolute lg:inset-y-0 lg:right-0 xs:h-72 md:h-96 lg:w-1/2 lg:h-full">
+			<img class="absolute inset-0 w-full h-full object-cover" src="{{ asset('images/binome.jpg') }}" alt="">
+		</div>
+	</section>
+	
+	<div id="wordCloud" class="hidden justify-center flex-wrap max-w-8xl mx-auto align-center gap-8 leading-8 text-gray-300/70 bold py-36 lg:flex"></div>
+	
+	<div class="bg-white py-2 iphone:py-6 xs:py-4 lg:py-14">
+		<div class="relative w-full">
+			<div class="relative  py-24 px-8 bg-slate-800 shadow-2xl overflow-hidden lg:px-16 lg:grid lg:grid-cols-2
+			lg:gap-x-8">
+				<div class="absolute inset-0 opacity-70 filter saturate-0 mix-blend-multiply">
+					<ul role="list" class="grid grid-cols-1 gap-x-4 gap-y-8 p-8 iphone:grid-cols-1 xs:grid-cols-1
+					xs:gap-x-8
+					lg:grid-cols-3
+					xl:gap-x-8">
+						<li class="relative">
+							<div class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
+								<img src="{{ asset('images/daniel-j-schwarz-7QQoHJ5vV9Y-unsplash.jpg') }}" alt="" class="w-full h-full object-cover">
+							</div>
+						</li>
+						<li class="relative">
+							<div class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 origin-center
+							rotate-2
+							focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
+								<img src="{{ asset('images/milad-fakurian-PRYpUx018P4-unsplash.jpg') }}" alt="" class="w-full h-full object-cover">
+							</div>
+						</li>
+						<li class="relative">
+							<div class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
+								<img src="{{ asset('images/fabienne-campello-YDFC6EqxxeE-unsplash.jpg') }}" alt="" class="w-full h-full object-cover">
+							</div>
+						</li>
+						<li class="relative">
+							<div class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 origin-center -rotate-3
+							focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
+								<img src="{{ asset('images/lawrence-chismorie-60JVrJ95Vds-unsplash.jpg') }}" alt="" class="w-full h-full object-cover">
+							</div>
+						</li>
+						<li class="relative">
+							<div class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
+								<img src="{{ asset('images/toa-heftiba-FV3GConVSss-unsplash.jpg') }}" alt="" class="w-full h-full object-cover">
+							</div>
+						</li>
+						<li class="relative">
+							<div class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 origin-center rotate-6
+							focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
+								<img src="{{ asset('images/nastuh-abootalebi-rSpMla5RItA-unsplash.jpg') }}" alt="" class="w-full h-full object-cover">
+							</div>
+						</li>
+						
+						<!-- More files... -->
+					</ul>
+				</div>
+				<div class="relative lg:col-span-1">
+					<blockquote class="my-14 iphone:my-24 xs:my-36 text-white">
+						<h3 class="h3 tracking-tight font-extrabold text-white py-8">
+							<span class="block ">Notre Galerie</span>
+							<span class="block text-amber-300 ">De Photo</span>
+						</h3>
+						<p class="italic text-2xl iphone:text-2xl xs:text-xl">Explorez notre galerie diversifiée et
+							laissez-vous
+							guider
+							par votre inspiration, ou utilisez des filtres pour affiner votre recherche en fonction de vos critères précis. Nous avons pris soin de rassembler une gamme variée d'images afin de vous offrir une expérience de sélection personnalisée et adaptée à vos goûts uniques.</p>
+					</blockquote>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-
-
-
 {% endblock %}
