@@ -2,10 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Client;
-use App\Entity\Identity;
 use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -19,20 +16,20 @@ class ChangePasswordType extends AbstractType
     {
         $builder
             ->add('newPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
+                'type'            => PasswordType::class,
                 'invalid_message' => 'Le mot de passe doit être identique',
-                'first_options' =>[
-                    'label' => 'Nouveau mot de passe',
-                    'hash_property_path' => 'password'
+                'first_options'   => [
+                    'label'              => 'Nouveau mot de passe',
+                    'hash_property_path' => 'password',
                 ],
-                'second_options' => ['label' => 'Répéter le mot de passe'],
-                'mapped' => false,
-                'constraints' => [
+                'second_options'  => ['label' => 'Répéter le mot de passe'],
+                'mapped'          => false,
+                'constraints'     => [
                     new Length([
-                        'min' => 8,
-                        'minMessage' => 'Votre mot de passe doit faire {{ limit }} caractères minimum'
-                    ])
-                ]
+                        'min'        => 8,
+                        'minMessage' => 'Votre mot de passe doit faire {{ limit }} caractères minimum',
+                    ]),
+                ],
             ])
         ;
     }

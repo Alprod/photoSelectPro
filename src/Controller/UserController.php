@@ -11,13 +11,10 @@ use App\Service\MessageGeneratorService;
 use App\Service\TimingTaskService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Length;
 
 class UserController extends AbstractController
 {
@@ -65,19 +62,21 @@ class UserController extends AbstractController
         $form = $this->createForm(ChangePasswordType::class, $user);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $newPassword = $form->get('newPassword')->getData();
             $hasherPassword = $hasher->hashPassword($user, $newPassword);
-            $repo->upgradePassword($user,$hasherPassword);
-            $this->addFlash('success', $this->messageGenerator->getUpdatePassword());
+            $repo->upgradePassword($user, $hasherPassword);
+            $this->addFlash('success', $this->messageGenerator->getMessageUpdatePassword());
 
             return $this->redirectToRoute('app_user', [
-                'id' => $user->getId()
+                'id' => $user->getId(),
             ]);
         }
+
         return $this->render('user/update_password.html.twig', [
             'user' => $user,
-            'form' => $form
+            'form' => $form,
         ]);
     }
 }

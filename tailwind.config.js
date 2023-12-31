@@ -42,7 +42,8 @@ module.exports = {
                 ,
                 primary: 'rgba(81,122,222,0.97)',
                 hoverPrimary: 'rgba(60,108,224,0.97)',
-                warring: '#f7b731',
+                warning: '#f7b731',
+                hoverWarning: '#f8c458',
                 danger: {
                     100: '#fcb5b3',
                     200: '#ff9a98',

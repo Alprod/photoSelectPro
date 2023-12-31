@@ -4,7 +4,7 @@ namespace App\Service;
 
 class MessageGeneratorService
 {
-    public function getSuccessEmailIsVerified(string $email): string
+    public function getMessageSuccessEmailIsVerified(string $email): string
     {
         return 'Bravo! Vous avez réussi à vérifier votre adresse '.$email.'. Vous êtes maintenant près pour votre parcours de selection de photo. Bienvenu à bord';
     }
@@ -24,7 +24,7 @@ class MessageGeneratorService
         return $message[$index];
     }
 
-    public function getErrorMessageEmailVerified(): string
+    public function getMessageErrorEmailVerified(): string
     {
         return "Nous nous excusons, mais nous n'avons pas réussi à vous localiser. Veuillez vérifier votre boite mail afin de validé votre email et réessayer.";
     }
@@ -44,7 +44,7 @@ class MessageGeneratorService
         return 'Veuillez vous assurer que certains champs ne sont pas laissés vides afin de garantir une soumission complète et précise du formulaire.';
     }
 
-    public function getErrorAuthenticationLogin(): string
+    public function getMessageErrorAuthenticationLogin(): string
     {
         return "La saisie ne correspond pas aux informations attendues. Veuillez vérifier vos données d'accès";
     }
@@ -59,23 +59,34 @@ class MessageGeneratorService
         return "Merci pour votre participation j'éspère vous revoir bientôt";
     }
 
-    public function getEmailIsVerified(string $email): string
+    public function getMessageEmailIsVerified(string $email): string
     {
         return 'Merci, mais '.$email.' est déjà Vérifier';
     }
 
-    public function getUpdatePassword(): string
+    public function getMessageUpdatePassword(): string
     {
         $message = [
-            "Félicitations ! Votre mot de passe a été mis à jour avec succès.",
-            "Bravo ! Vous venez de sécuriser votre compte en mettant à jour votre mot de passe.",
-            "Excellent travail ! Votre mot de passe a été changé avec succès. Votre compte est maintenant plus sécurisé.",
-            "Succès ! Vous avez accompli la mise à jour de votre mot de passe avec succès. Votre compte est entre de bonnes mains.",
+            'Félicitations ! Votre mot de passe a été mis à jour avec succès.',
+            'Bravo ! Vous venez de sécuriser votre compte en mettant à jour votre mot de passe.',
+            'Excellent travail ! Votre mot de passe a été changé avec succès. Votre compte est maintenant plus sécurisé.',
+            'Succès ! Vous avez accompli la mise à jour de votre mot de passe avec succès. Votre compte est entre de bonnes mains.',
             "C'est officiel ! Votre mot de passe a été modifié avec succès. Merci de veiller à la sécurité de votre compte.",
         ];
 
         $index = array_rand($message);
 
         return $message[$index];
+    }
+
+    public function getMessageNotFoundUser(string $email): string
+    {
+        return "On a essayé de dénicher l'e-mail ".$email.", mais on dirait qu'il joue à cache-cache. Peut-être une faute de frappe ? Si tu as une autre adresse, on la trouvera sûrement !";
+    }
+
+    public function getMessageEmailSending(string $email): string
+    {
+        return 'Bonne nouvelle : un email important vient de partir a cette adresse '.$email.". C'est au sujet de la mise à jour de ton compte. 🚀 <br/>
+                ⏳ Regarde vite ! Consulte ta boîte de réception pour tous les détails.";
     }
 }

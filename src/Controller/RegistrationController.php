@@ -68,7 +68,7 @@ class RegistrationController extends AbstractController
             $timingTask->timingEntityManager('Register user', User::class, $user);
 
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user, (new TemplatedEmail())
-                    ->from(new Address('no-reply@teampsp.com', '�Team PhotoSelectPro'))
+                    ->from(new Address('no-reply@teampsp.fr', '�Team PhotoSelectPro'))
                     ->to($user->getEmail())
                     ->subject('Veuillez confirmer votre email')
                     ->htmlTemplate('emails/confirmation_email.html.twig'));
@@ -95,7 +95,7 @@ class RegistrationController extends AbstractController
         $id = $request->query->get('id');
 
         if (null === $id) {
-            $this->addFlash('danger', $this->messageGenerator->getErrorMessageEmailVerified());
+            $this->addFlash('danger', $this->messageGenerator->getMessageErrorEmailVerified());
 
             return $this->redirectToRoute('app_register');
         }
@@ -103,13 +103,13 @@ class RegistrationController extends AbstractController
         $user = $userRepository->find($id);
 
         if (null === $user) {
-            $this->addFlash('danger', $this->messageGenerator->getErrorMessageEmailVerified());
+            $this->addFlash('danger', $this->messageGenerator->getMessageErrorEmailVerified());
 
             return $this->redirectToRoute('app_register');
         }
 
         if (true === $user->isVerified()) {
-            $this->addFlash('success', $this->messageGenerator->getEmailIsVerified($user->getEmail()));
+            $this->addFlash('success', $this->messageGenerator->getMessageEmailIsVerified($user->getEmail()));
 
             return $this->redirectToRoute('app_home');
         }
@@ -123,7 +123,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
-        $this->addFlash('success', $this->messageGenerator->getSuccessEmailIsVerified($user->getEmail()));
+        $this->addFlash('success', $this->messageGenerator->getMessageSuccessEmailIsVerified($user->getEmail()));
 
         return $this->redirectToRoute('app_login');
     }

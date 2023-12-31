@@ -20,8 +20,7 @@
 	{% set ringClassColor = colors['danger'].ring %}
 {% endif %}
 
-<div id="alertContent" aria-live="assertive" class="z-40 fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6
-iphone:items-start">
+<div id="alertContent" aria-live="assertive" class="z-40 fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 iphone:items-start">
 	<div class="w-full flex flex-col items-center space-y-4 iphone:items-end">
 		<!--
 		  Notification panel, dynamically insert this into the live region when it needs to be displayed
@@ -33,7 +32,7 @@ iphone:items-start">
 			From: "opacity-100"
 			To: "opacity-0"
 		-->
-		<div class="max-w-sm w-full {{ bgClassColor }} shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+		<div class="max-w-md w-full {{ bgClassColor }} shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
 			<div class="p-4">
 				<div class="flex items-start">
 					<div class="flex-shrink-0">

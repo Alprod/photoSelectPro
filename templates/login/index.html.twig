@@ -20,8 +20,8 @@
                 </div>
                 <input type="hidden" name="_target_path" value="{{ path('app_home') }}">
                 <input type="hidden" name="_crsf_token" value="{{ csrf_token("authenticate") }}">
-                
-                <button type="submit" class="btn-primary">Connexion</button>
+                <a href="{{ path('app_forgot_password_request') }}" class="btn-warning block max-w-md mx-auto">Mot de passe oublier</a>
+                <button type="submit" class="btn-primary block max-w-md mx-auto">Connexion</button>
             </form>
         </div>
     </section>

@@ -1,0 +1,18 @@
+{% apply inline_css(source("@styles/emails.css")) %}
+	<main class="container">
+		<section class="section1">
+			<h1>Hi! {{ email.to[0].address }}</h1>
+			<p>Pour réinitialiser votre mot de passe, veuillez consulter le lien suivant</p>
+		</section>
+		<section class="section2">
+			<div class="link">
+				<a href="{{ url('app_reset_password', {token: resetToken.token}) }}">Réintialiser votre email</a>
+			</div>
+			<p class="info">Ce lien expire dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle', 'fr_FR') }}.</p>
+			<p class="txt">Félicitation !!!</p>
+		</section>
+	</main>
+	<footer class="footer">
+	
+	</footer>
+{% endapply %}
