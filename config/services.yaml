@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     timezone: '%env(APP_TIMEZONE)%'
+    avatar_directory: '%kernel.project_dir%/public/images/uploads/avatars'
 
 services:
     # default configuration for services in *this* file
@@ -43,3 +44,7 @@ services:
     App\Logger\EmailSendLogger:
         arguments:
             $emailSendLogger: '@monolog.logger.email_send'
+
+    App\Service\Uploader\AvatarUploadFile:
+        arguments:
+            $targetDirectory: '%avatar_directory%'

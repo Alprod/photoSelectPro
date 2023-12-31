@@ -36,13 +36,13 @@ readonly class AuthenticationFailedHandler implements AuthenticationFailureHandl
         $user = $em->getRepository(User::class)->findOneBy(['email' => $reqUser]);
 
         if (!$user) {
-            $session->getFlashBag()->add('danger', message: $this->messageGenerator->getErrorAuthenticationLogin());
+            $session->getFlashBag()->add('danger', message: $this->messageGenerator->getMessageErrorAuthenticationLogin());
 
             throw new UserNotFoundException('Utilisateur non trouvé');
         }
         $route = $this->urlGenerator->generate('app_login');
         $this->securityLogger->securityErrorLog('Tantative de connexion echoué', [
-            'messege' => $exception->getMessage(),
+            'message' => $exception->getMessage(),
             'code'    => $exception->getCode(),
             'file'    => $exception->getFile(),
         ]);

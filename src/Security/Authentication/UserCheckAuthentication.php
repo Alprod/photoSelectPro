@@ -27,7 +27,7 @@ readonly class UserCheckAuthentication implements UserCheckerInterface
         }
 
         if (!$user->isVerified()) {
-            throw new AccountNotVerifeidAuthenticationException($this->messageGenerator->getErrorMessageEmailVerified());
+            throw new AccountNotVerifeidAuthenticationException($this->messageGenerator->getMessageErrorEmailVerified());
         }
 
         $requestPassword = $this->requestStack->getCurrentRequest()->request->get('_password');
@@ -37,7 +37,7 @@ readonly class UserCheckAuthentication implements UserCheckerInterface
         }
 
         if (!$this->hasherFactory->getPasswordHasher($user)->verify($user->getPassword(), $requestPassword)) {
-            throw new BadCredentialsException($this->messageGenerator->getErrorAuthenticationLogin());
+            throw new BadCredentialsException($this->messageGenerator->getMessageErrorAuthenticationLogin());
         }
     }
 
