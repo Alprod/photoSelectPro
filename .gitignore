@@ -1,7 +1,7 @@
 .idea
 .DS_STORE
 qodana.yaml
-/public/images/
+/public/images/uploads
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
