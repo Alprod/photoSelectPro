@@ -68,6 +68,7 @@ class UserController extends AbstractController
         ]);
     }
 
+   
     #[Route('/updatePassword/{user}', name: 'app_updatepassword')]
     public function updatePassword(User $user, Request $request, UserRepository $repo, UserPasswordHasherInterface $hasher): Response
     {
