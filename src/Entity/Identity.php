@@ -3,15 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\IdentityRepository;
+use App\Trait\ResourceId;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: IdentityRepository::class)]
 class Identity
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use ResourceId;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstname = null;
@@ -33,11 +31,6 @@ class Identity
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $avatarFilename = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getFirstname(): ?string
     {

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\GroupRepository;
+use App\Trait\ResourceId;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,10 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: '`group`')]
 class Group
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use ResourceId;
 
     #[ORM\Column(length: 100)]
     private ?string $name = null;
@@ -32,11 +30,6 @@ class Group
     {
         $this->binomials = new ArrayCollection();
         $this->groupFinalSelections = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getName(): ?string

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\GroupFinalSelectionRepository;
+use App\Trait\ResourceId;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,10 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: GroupFinalSelectionRepository::class)]
 class GroupFinalSelection
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use ResourceId;
 
     #[ORM\ManyToOne(inversedBy: 'groupFinalSelections')]
     private ?Group $groupFinal = null;
@@ -24,11 +22,6 @@ class GroupFinalSelection
     public function __construct()
     {
         $this->photo = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getGroupFinal(): ?Group

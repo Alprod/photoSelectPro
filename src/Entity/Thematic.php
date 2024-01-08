@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ThematicRepository;
+use App\Trait\ResourceId;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -11,10 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ThematicRepository::class)]
 class Thematic
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use ResourceId;
 
     #[ORM\Column(length: 100)]
     private ?string $name = null;
@@ -31,11 +29,6 @@ class Thematic
     public function __construct()
     {
         $this->groups = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getName(): ?string

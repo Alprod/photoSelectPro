@@ -3,18 +3,19 @@
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
+use App\Trait\ResourceId;
+use App\Trait\TimestampablePrePersistTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use ResourceId;
+    use TimestampablePrePersistTrait;
 
     #[ORM\Column(length: 100)]
     private ?string $name = null;
@@ -30,9 +31,6 @@ class Client
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $contactEmail = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(length: 255)]
     private ?string $refNumber = null;
@@ -51,11 +49,6 @@ class Client
         $this->users = new ArrayCollection();
         $this->selectionProcesses = new ArrayCollection();
         $this->photos = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getName(): ?string
@@ -77,7 +70,7 @@ class Client
 
     public function setDescription(?string $description): static
     {
-        $this->description = $description;
+        $this->description = htmlentities($description);
 
         return $this;
     }
@@ -114,18 +107,6 @@ class Client
     public function setContactEmail(?string $contactEmail): static
     {
         $this->contactEmail = $contactEmail;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
 
         return $this;
     }

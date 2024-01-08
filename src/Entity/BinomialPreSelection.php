@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\BinomialPreSelectionRepository;
+use App\Trait\ResourceId;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,10 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: BinomialPreSelectionRepository::class)]
 class BinomialPreSelection
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use ResourceId;
 
     #[ORM\ManyToOne(inversedBy: 'binomialPreSelections')]
     private ?Binomial $binomial = null;
@@ -28,11 +26,6 @@ class BinomialPreSelection
     {
         $this->photos = new ArrayCollection();
         $this->binomialFinalSelections = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getBinomial(): ?Binomial
