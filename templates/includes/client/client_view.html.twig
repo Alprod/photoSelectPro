@@ -38,7 +38,7 @@
 						<p class="text-white text-md text-center max-w-2xl mx-auto py-10">Entamez dès aujourd'hui un parcours personnalisé qui vous offre une expérience professionnelle exceptionnelle, parfaitement adaptée à vos besoins. Nous vous invitons à vous lancer dans cette aventure inoubliable. Êtes-vous prêt à explorer les avantages uniques qui vous attendent ?</p>
                         <div class="mt-4 sm:mt-6">
                             <a
-                                href="#"
+                                href="{{ path('app_register_client') }}"
                                 class="inline-block bg-gray-600 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-gray-700">Shop Collection</a>
                         </div>
                     </div>
@@ -223,8 +223,9 @@
                                                 <img
                                                     class="object-cover object-center rounded-3xl shadow-2xl"
                                                     src="https://images.unsplash.com/photo-1507207611509-ec012433ff52?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80"
-                                                    alt=""></div>
-                                            </div>
+                                                    alt="">
+											</div>
+                                        </div>
                                         </div>
 
                                         <div
@@ -299,7 +300,7 @@
                                                 </p>
                                                 <a
                                                     class="block w-full py-3 px-5 text-center bg-gray-500 border border-transparent rounded-md shadow-md text-base font-medium text-gray-50 hover:bg-gray-400 sm:inline-block sm:w-auto"
-                                                    href="#">Démarrer</a>
+                                                    href="{{ path('app_register_client') }}">Démarrer</a>
                                             </div>
                                         </div>
                                     </div>
