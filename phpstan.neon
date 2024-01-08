@@ -23,5 +23,6 @@ parameters:
                 - '#Call to an undefined method [a-zA-Z0-9\\_]+::getId\(\)#'
                 - '#Call to an undefined method [a-zA-Z0-9\\_]+::getEmail\(\)#'
                 - '#Call to an undefined method [a-zA-Z0-9\\_]+::getFlashBag\(\)#'
+                - '#Call to an undefined method [a-zA-Z0-9\\_]+::getGenerateSlugger\(\)#'
     symfony:
         containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
