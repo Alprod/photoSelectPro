@@ -4,64 +4,63 @@
     {% include 'includes/header/_header.html.twig' %}
 {% endblock %}
 {% block body %}
-<section class="relative max-w-7xl mx-auto">
+<section class="relative max-w-7xl mx-auto py-10">
     <div class="relative bg-white">
-    <div class="absolute inset-0">
-        <div class="absolute inset-y-0 left-0 w-1/2 bg-gray-50"></div>
-    </div>
-    <div class="relative max-w-6xl mx-auto lg:grid lg:grid-cols-5">
-        <div class="bg-gray-50 py-16 px-4 sm:px-6 lg:col-span-2 lg:px-8 lg:py-24 xl:pr-12">
-            <div class="max-w-lg mx-auto pb-4">
-                <h2 class="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">Enregistrez vous</h2>
-                <p class="mt-3 text-lg leading-6 text-gray-500">Avant de démarrer votre parcours, veuillez prendre quelques instants pour vous enregistrer vous et votre entreprise ou formateur. C'est une étape rapide et facile, adaptée à vos attentes. Une fois enregistré, profiter pleinement de votre parcours exceptionnel.</p>
-
-            </div>
-            <div class="aspect-w-10 aspect-h-6 sm:aspect-w-2 sm:aspect-h-1 lg:aspect-w-1">
-                <img class="object-cover object-center rounded-3xl shadow-2xl" src="https://images.unsplash.com/photo-1507207611509-ec012433ff52?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80" alt="">
-			</div>
+        <div class="absolute inset-0">
+            <div class="absolute inset-y-0 left-0 w-1/2 bg-gray-100 rounded-2xl"></div>
         </div>
-        <div class="bg-white py-16 px-4 sm:px-6 lg:col-span-3 lg:py-24 lg:px-8 xl:pl-12">
-            <div class="max-w-lg mx-auto lg:max-w-none">
-
-                {{ form_start(clientForm, {'method': 'POST'}) }}
-                    <div class="mb-4">
-                        {{ form_label(clientForm.name) }}
-                        {{ form_widget(clientForm.name) }}
-                        <span class="text-sm text-danger-600">{{ form_errors(clientForm.name) }}</span>
-                    </div>
-                    
-                    <div class="mb-4">
-                        {{ form_label(clientForm.contactName) }}
-                        {{ form_widget(clientForm.contactName) }}
-                        <span class="text-sm text-danger-600">{{ form_errors(clientForm.contactName) }}</span>
-                        <span class="text-sm text-gray-300">{{ form_help(clientForm.contactName) }}</span>
-                        
-                    </div>
-
-                    <div class="mb-4">
-                        {{ form_label(clientForm.contactEmail) }}
-                        {{ form_widget(clientForm.contactEmail) }}
-                        <span class="text-sm text-danger-600">{{ form_errors(clientForm.contactEmail) }}</span>
-                    </div>
-
-                    <div class="mb-8">
-                        {{ form_label(clientForm.description) }}
-                        {{ form_widget(clientForm.description) }}
-                        <span class="text-sm text-danger-600">{{ form_errors(clientForm.description) }}</span>
-                    </div>
-                    {% if clientForm.plainPassword is defined %}
-                        {% dump(clientForm.plainPassword.vars.id) %}
-                        <div class="mb-8">
-                            {{ form_label(clientForm.plainPassword) }}
-                            {{ form_widget(clientForm.plainPassword) }}
-                            <span class="text-sm text-danger-600">{{ form_errors(clientForm.plainPassword) }}</span>
+        <div class="relative bg-transparent max-w-6xl mx-auto lg:grid lg:grid-cols-5 lg:rounded-2xl">
+            <div class="bg- rounded-2xl py-16 px-4 sm:px-6 lg:col-span-2 lg:px-8 lg:py-24 xl:pr-12">
+                <div class="max-w-lg mx-auto pb-4">
+                    <h2 class="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">Enregistrez vous</h2>
+                    <p class="mt-3 text-lg leading-6 text-gray-500">Avant de démarrer votre parcours, veuillez prendre quelques instants pour vous enregistrer vous et votre entreprise ou formateur. C'est une étape rapide et facile, adaptée à vos attentes. Une fois enregistré, profiter pleinement de votre parcours exceptionnel.</p>
+                </div>
+                <div class="aspect-w-10 aspect-h-6 sm:aspect-w-2 sm:aspect-h-1 lg:aspect-w-1">
+                    <img class="object-cover object-center rounded-3xl shadow-2xl" src="https://images.unsplash.com/photo-1507207611509-ec012433ff52?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80" alt="">
+                </div>
+            </div>
+            <div class="bg-transparent py-16 px-4 sm:px-6 lg:col-span-3 lg:py-24 lg:px-8 xl:pl-12">
+                <div class="max-w-lg mx-auto lg:max-w-none">
+    
+                    {{ form_start(clientForm, {'method': 'POST'}) }}
+                        <div class="mb-4">
+                            {{ form_label(clientForm.name) }}
+                            {{ form_widget(clientForm.name) }}
+                            <span class="text-sm text-danger-600">{{ form_errors(clientForm.name) }}</span>
                         </div>
-                    {% endif %}
-                    {{ form_widget(clientForm.submit, {'label': 'Enregistrer'}) }}
-                {{ form_end(clientForm) }}
+                        
+                        <div class="mb-4">
+                            {{ form_label(clientForm.contactName) }}
+                            {{ form_widget(clientForm.contactName) }}
+                            <span class="text-sm text-danger-600">{{ form_errors(clientForm.contactName) }}</span>
+                            <span class="text-sm text-gray-300">{{ form_help(clientForm.contactName) }}</span>
+                            
+                        </div>
+    
+                        <div class="mb-4">
+                            {{ form_label(clientForm.contactEmail) }}
+                            {{ form_widget(clientForm.contactEmail) }}
+                            <span class="text-sm text-danger-600">{{ form_errors(clientForm.contactEmail) }}</span>
+                        </div>
+    
+                        <div class="mb-8">
+                            {{ form_label(clientForm.description) }}
+                            {{ form_widget(clientForm.description) }}
+                            <span class="text-sm text-danger-600">{{ form_errors(clientForm.description) }}</span>
+                        </div>
+                        {% if clientForm.plainPassword is defined %}
+                            {% dump(clientForm.plainPassword.vars.id) %}
+                            <div class="mb-8">
+                                {{ form_label(clientForm.plainPassword) }}
+                                {{ form_widget(clientForm.plainPassword) }}
+                                <span class="text-sm text-danger-600">{{ form_errors(clientForm.plainPassword) }}</span>
+                            </div>
+                        {% endif %}
+                        {{ form_widget(clientForm.submit, {'label': 'Enregistrer'}) }}
+                    {{ form_end(clientForm) }}
+                </div>
             </div>
         </div>
-    </div>
     </div>
 </section>
 {% endblock %}
