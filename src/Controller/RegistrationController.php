@@ -9,6 +9,7 @@ use App\Logger\SecurityLogger;
 use App\Repository\ClientRepository;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+use App\Service\EmailService;
 use App\Service\MessageGeneratorService;
 use App\Service\TimingTaskService;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -39,7 +40,8 @@ class RegistrationController extends AbstractController
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
         TimingTaskService $timingTask,
-        ClientRepository $clientRepo
+        ClientRepository $clientRepo,
+        EmailService $emailService
     ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -67,11 +69,7 @@ class RegistrationController extends AbstractController
                 );
             $timingTask->timingEntityManager('Register user', User::class, $user);
 
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user, (new TemplatedEmail())
-                    ->from(new Address('no-reply@teampsp.fr', '�Team PhotoSelectPro'))
-                    ->to($user->getEmail())
-                    ->subject('Veuillez confirmer votre email')
-                    ->htmlTemplate('emails/confirmation_email.html.twig'));
+            $emailService->emailVerifierService($user);
 
             return $this->redirectToRoute('app_render_verif_email', ['email' => $user->getEmail()]);
         }
