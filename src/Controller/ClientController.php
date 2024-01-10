@@ -7,7 +7,6 @@ use App\Entity\Identity;
 use App\Entity\User;
 use App\Form\ClientType;
 use App\Repository\UserRepository;
-use App\Security\EmailVerifier;
 use App\Service\EmailService;
 use App\Service\TimingTaskService;
 use App\Service\ToolsService;
