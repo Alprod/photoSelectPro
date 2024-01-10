@@ -7,7 +7,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 readonly class ToolsService
 {
-    public function __construct( private SluggerInterface $slugger)
+    public function __construct(private SluggerInterface $slugger)
     {
     }
 
@@ -20,10 +20,10 @@ readonly class ToolsService
     {
         $ramdomizer = new Randomizer();
         $nameClient = $this->getGeneratorSlugger($clientName);
+
         return sprintf(
             'RefNumber_'.$nameClient.'_%s',
             $ramdomizer->getBytesFromString('abcdefghijklmnopqrstuvwxyz0123456789', 8)
         );
     }
-    
 }
