@@ -11,13 +11,12 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AddNewFieldClientSubscriber implements EventSubscriberInterface
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    #[\Override] public static function getSubscribedEvents()
+    #[\Override] public static function getSubscribedEvents(): array
     {
-        return [ FormEvents::PRE_SUBMIT => 'onPreSubmit' ];
+        return [FormEvents::PRE_SUBMIT => 'onPreSubmit'];
     }
 
     public function onPreSubmit(FormEvent $event): void
@@ -27,7 +26,7 @@ class AddNewFieldClientSubscriber implements EventSubscriberInterface
 
         $labelAttr = ['class' => 'block text-base text-gray-700'];
 
-        if(isset($client['contactEmail']) && $client['contactEmail']){
+        if (isset($client['contactEmail']) && $client['contactEmail']) {
             $form->add('plainPassword', PasswordType::class, [
                 'label'       => 'Mot de passe',
                 'label_attr'  => $labelAttr,
