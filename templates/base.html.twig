@@ -16,13 +16,13 @@
     <body>
     <div class="bg-white">
         <div class="relative overflow-hidden">
+            {% block alert %}
+                {% include 'includes/alert/_alert.html.twig' %}
+            {% endblock %}
             {% block header %}
                 {% include 'includes/header/_container_header.html.twig' %}
             {% endblock %}
             
-            {% block alert %}
-                {% include 'includes/alert/_alert.html.twig' %}
-            {% endblock %}
             
             <main>
                 {% block body %}{% endblock %}

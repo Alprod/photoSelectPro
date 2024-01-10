@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SelectionProcessRepository;
+use App\Trait\ResourceId;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,10 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: SelectionProcessRepository::class)]
 class SelectionProcess
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use ResourceId;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -33,11 +31,6 @@ class SelectionProcess
     public function __construct()
     {
         $this->thematics = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getName(): ?string

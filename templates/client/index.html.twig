@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Créer un parcour{% endblock %}
+{% block header %}
+	{% include 'includes/header/_header.html.twig' %}
+{% endblock %}
+{% block body %}
+	<section class="relative max-w-8xl mx-auto bg-white md:py-2 iphone:py-0 xs:py-0 lg:py-14">
+		<div class="min-h-screen">
+			{% include 'includes/client/client_view.html.twig' %}
+		</div>
+	</section>
+
+{% endblock %}

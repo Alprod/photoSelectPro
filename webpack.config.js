@@ -60,6 +60,11 @@ Encore
             config: path.resolve(__dirname,'', 'postcss.config.js')
         }
     })
+    .copyFiles({
+        from: './assets/images',
+        to: 'images/[path][name].[ext]',
+        pattern: /\.(png|jpg|jpeg)$/
+    })
 
     // enables Sass/SCSS support
     //.enableSassLoader()
