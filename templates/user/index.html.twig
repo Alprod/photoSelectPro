@@ -6,7 +6,8 @@
 	<section class="relative max-w-7xl mx-auto bg-white py-2 iphone:py-6 xs:py-4 lg:py-14">
 		<h1 class="h2 m-6">Votre profile</h1>
 		<div class="mx-8 p-8">
-			<p>Bienvenue sur PhotoSelect Pro ici, vous retrouverez toutes les informations concernant votre parcours de selection de photo le de cette formation</p>
+			<p>Bienvenue sur PhotoSelect Pro ici, vous retrouverez toutes les informations concernant vos parcours de
+				selection de photo de cette formation</p>
 		</div>
 		
 		<div class="mx-8 p-4 iphone:p-8">
@@ -20,11 +21,28 @@
 								<div class="flex-1 min-w-0">
 									<!-- Profile -->
 									<div class="flex items-center">
-										<img class="hidden h-16 w-16 rounded-full sm:block" src="{{ asset('images/uploads/avatars/' ~ user.identity.avatarFilename) }}" alt="avatar image" />
+										{% if app.user.identity.avatarFilename is null %}
+											<img class="hidden h-16 w-16 rounded-full sm:block" src="{{ asset('images/site-images/default_avatar.jpg') }}" alt="warren-umoh de unsplash" />
+										{% else %}
+											<img class="hidden h-16 w-16 rounded-full sm:block" src="{{ asset('images/uploads/avatars/' ~ user.identity.avatarFilename) }}" alt="avatar image" />
+										{% endif %}
 										<div>
 											<div class="flex items-center">
-												<img class="h-16 w-16 rounded-full sm:hidden" src="{{ asset('images/uploads/avatars/' ~ user.identity.avatarFilename) }}" alt="avatar image" />
-												<h1 class="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:leading-9 sm:truncate">Bienvenue à toi, {{ user.identity.firstname ~ ' ' ~ user.identity.lastname }}</h1>
+												{% if app.user.identity.avatarFilename is null %}
+													<img class="h-16 w-16 rounded-full sm:hidden" src="{{ asset('images/site-images/default_avatar.jpg') }}" alt="warren-umoh de unsplash" />
+												{% else %}
+													<img class="h-16 w-16 rounded-full sm:hidden" src="{{ asset('images/uploads/avatars/' ~ user.identity.avatarFilename) }}" alt="avatar image" />
+												{% endif %}
+												<h1 class="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:leading-9 sm:truncate">
+													Bienvenue à toi, {{ user.identity.firstname ~ ' ' ~ user.identity.lastname }}
+												</h1>
+												{% if is_granted('ROLE_CLIENT') %}
+													<span class="text-yellow-500 pl-3">
+														<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+															<path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+														</svg>
+													</span>
+												{% endif %}
 											</div>
 											<dl class="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
 												
@@ -73,7 +91,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="mt-6 flex space-x-3 md:ml-4">
+								<div class="mt-6 flex flex-col space-x-3 md:ml-4 sm:flex-row">
 									<a href="{{ path('app_updatepassword', { user: user.id }) }}" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm text-center font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">Changer mot de passe</a>
 									<button id="MajbtnProfilModalForm" type="button" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
 										MàJ info compémentaire
@@ -85,8 +103,8 @@
 				{% endif %}
 			</div>
 		<div class="mx-8 p-4 iphone:p-8">
-			<h2></h2>
-			Contenu parcours
+			<h2>Contenu parcours</h2>
+			
 		</div>
 	</section>
 	
@@ -116,7 +134,7 @@
 								{{ form_widget(identityForm.avatar) }}
 								<span class="block pt-4 text-sm text-gray-700">{{ form_help(identityForm.avatar) }}</span>
 								<span class="block pt-4 text-sm text-danger-700">{{ form_errors(identityForm.avatar) }}</span>
-								{% if(user.identity.avatarFilename) is not null %}
+								{% if user.identity.avatarFilename is defined and user.identity.avatarFilename is not null %}
 									<div class="flex">
 										<div class="mr-4 flex-shrink-0 self-center">
 											<img class="h-14 w-14 rounded-md" src="{{ asset('images/uploads/avatars/' ~ user.identity.avatarFilename) }}" alt="avatar image">
