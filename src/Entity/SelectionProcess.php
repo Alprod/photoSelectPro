@@ -25,7 +25,7 @@ class SelectionProcess
     #[ORM\ManyToOne(inversedBy: 'selectionProcesses')]
     private ?Client $client = null;
 
-    #[ORM\OneToMany(mappedBy: 'selectionProcess', targetEntity: Thematic::class)]
+    #[ORM\OneToMany(mappedBy: 'selectionProcess', targetEntity: Thematic::class, cascade: ['persist'])]
     private Collection $thematics;
 
     public function __construct()
