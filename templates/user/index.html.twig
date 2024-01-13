@@ -103,7 +103,13 @@
 				{% endif %}
 			</div>
 		<div class="mx-8 p-4 iphone:p-8">
-			<h2>Contenu parcours</h2>
+			<a href="{{ path('app_new_selection_process', {'slug': user.client.slug}) }}" class="btn-primary max-w-md">Créer un parcour</a>
+			{% for process in user.client.selectionProcesses  %}
+				{{ process.name }}
+			{% else %}
+				<h2>Pas de parcours de sélection pour le moment</h2>
+			{% endfor %}
+			
 			
 		</div>
 	</section>

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() ~ '|' ~ title }}{% endblock %}
+{% block header %}
+	{% include 'includes/header/_header.html.twig' %}
+{% endblock %}
+{% block body %}
+<section class="relative max-w-7xl mx-auto bg-white py-2 iphone:py-6 xs:py-4 lg:py-14 min-h-screen">
+	<h1 class="h2">{{ title }}</h1>
+	<div>
+		{% for allProcess in process %}
+			<p>{{ allProcess.name }}</p>
+		{% else %}
+			<div class="fonts-size py-10">Pour le moment, vous n'avez pas de parcours en cours, retourner sur votre <a href="{{ path('app_user', {'id': app.user.id}) }}" class="fonts-size underline underline-offset-1 hover:underline-offset-4">profile</a> afin de créer un parcour</div>
+		{% endfor %}
+	</div>
+</section>
+{% endblock %}

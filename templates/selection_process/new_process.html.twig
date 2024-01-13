@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ parent() ~'|New selection' }}{% endblock %}
+{% block header %}
+	{% include 'includes/header/_header.html.twig' %}
+{% endblock %}
+{% block body %}
+<section class="relative max-w-7xl mx-auto py-10">
+	<div class="relative bg-white">
+		<div class="absolute inset-0">
+			<div class="absolute inset-y-0 left-0 w-1/2 bg-gray-100 rounded-2xl"></div>
+		</div>
+		<div class="relative bg-transparent max-w-7xl mx-auto lg:grid lg:grid-cols-5 lg:rounded-2xl">
+			<div class="rounded-2xl py-16 px-4 sm:px-6 lg:col-span-2 lg:px-8 lg:py-24 xl:pr-12">
+				<div class="sticky top-0 inset-x-0 max-w-xl mx-auto pb-4">
+					<h2 class="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">Créer votre parcours de sélection</h2>
+					<p class="mt-3 text-lg leading-6 text-gray-600">
+						Prenez le temps de construire votre parcours en définissant le nombre de participants et en envisageant la répartition possible des groupes. Cette étape cruciale vous permettra de personnaliser votre expérience, assurant ainsi une participation optimale et des interactions enrichissantes. En tenant compte de ces paramètres, vous façonnez un parcours sur mesure qui répond à vos objectifs spécifiques et maximise l'impact de chaque étape.
+					</p>
+				</div>
+				<div class="aspect-w-10 aspect-h-6 sm:aspect-w-2 sm:aspect-h-1 lg:aspect-w-1">
+					<img class="object-cover object-center rounded-3xl shadow-2xl" src="{{ asset('images/site-images/jeppe-hove-jensen.jpg') }}" alt="jeppe-hove-jensen sur unsplash.com">
+				</div>
+			</div>
+			<div class="bg-transparent py-16 px-4 sm:px-6 lg:col-span-3 lg:py-24 lg:px-8 xl:pr-12">
+				<div class="max-w-7xl">
+						{{ form_start(formSelectProcess, { 'attr': {'class': 'flex flex-col space-y-6 py-10'} }) }}
+						<div>
+							{{ form_label(formSelectProcess.name) }}
+							{{ form_widget(formSelectProcess.name) }}
+							<span class="text-danger-700 text-md">{{ form_errors(formSelectProcess.name) }}</span>
+						</div>
+						<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+							<div>
+								{{ form_label(formSelectProcess.startDate) }}
+								{{ form_widget(formSelectProcess.startDate) }}
+								<span class="text-danger-700 text-md">{{ form_errors(formSelectProcess.startDate) }}</span>
+							</div>
+							<div>
+								{{ form_label(formSelectProcess.endDate) }}
+								{{ form_widget(formSelectProcess.endDate) }}
+								<span class="text-danger-700 text-md">{{ form_errors(formSelectProcess.endDate) }}</span>
+							</div>
+							<div>
+								{{ form_label(formSelectProcess.groups) }}
+								{{ form_widget(formSelectProcess.groups) }}
+								<span class="text-gray-500 text-sm py-10">
+									{{ form_help(formSelectProcess.groups) }}
+								</span>
+								<span class="text-danger-700 text-md">{{ form_errors(formSelectProcess.groups) }}</span>
+							</div>
+							<div>
+								{{ form_label(formSelectProcess.maxPersonByGroup) }}
+								{{ form_widget(formSelectProcess.maxPersonByGroup) }}
+								<span class="text-gray-500 text-sm py-10">
+									{{ form_help(formSelectProcess.maxPersonByGroup) }}
+								</span>
+								<span class="text-danger-700 text-md">
+									{{ form_errors(formSelectProcess.maxPersonByGroup) }}
+								</span>
+							</div>
+						
+						</div>
+						<div>
+							{{ form_label(formSelectProcess.thematic) }}
+							{{ form_widget(formSelectProcess.thematic) }}
+							<span class="text-danger-700 text-md">{{ form_errors(formSelectProcess.thematic) }}</span>
+						</div>
+						<div>
+							{{ form_label(formSelectProcess.description) }}
+							<span class="text-gray-500 text-md py-10">
+								{{ form_help(formSelectProcess.description) }}
+							</span>
+							{{ form_widget(formSelectProcess.description) }}
+							<span class="text-danger-700 text-md">
+								{{ form_errors(formSelectProcess.description) }}
+							</span>
+						</div>
+						
+						<button type="submit" class="btn-primary max-w-md">Valider</button>
+						{{ form_end(formSelectProcess) }}
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</section>
+{% endblock %}
+
+
