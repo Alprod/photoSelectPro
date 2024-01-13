@@ -26,6 +26,9 @@ class Group
     #[ORM\OneToMany(mappedBy: 'groupFinal', targetEntity: GroupFinalSelection::class)]
     private Collection $groupFinalSelections;
 
+    #[ORM\Column]
+    private ?int $maxPersonByGroup = 0;
+
     public function __construct()
     {
         $this->binomials = new ArrayCollection();
@@ -112,6 +115,18 @@ class Group
                 $groupFinalSelection->setGroupFinal(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMaxPersonByGroup(): ?int
+    {
+        return $this->maxPersonByGroup;
+    }
+
+    public function setMaxPersonByGroup(int $maxPersonByGroup): static
+    {
+        $this->maxPersonByGroup = $maxPersonByGroup;
 
         return $this;
     }
