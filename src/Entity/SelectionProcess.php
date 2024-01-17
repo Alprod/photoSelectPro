@@ -28,9 +28,13 @@ class SelectionProcess
     #[ORM\OneToMany(mappedBy: 'selectionProcess', targetEntity: Thematic::class, cascade: ['persist'])]
     private Collection $thematics;
 
+    #[ORM\OneToMany(mappedBy: 'selectionProcess', targetEntity: Photo::class)]
+    private Collection $photos;
+
     public function __construct()
     {
         $this->thematics = new ArrayCollection();
+        $this->photos = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -105,6 +109,36 @@ class SelectionProcess
             // set the owning side to null (unless already changed)
             if ($thematic->getSelectionProcess() === $this) {
                 $thematic->setSelectionProcess(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Photo>
+     */
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
+    }
+
+    public function addPhoto(Photo $photo): static
+    {
+        if (!$this->photos->contains($photo)) {
+            $this->photos->add($photo);
+            $photo->setSelectionProcess($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhoto(Photo $photo): static
+    {
+        if ($this->photos->removeElement($photo)) {
+            // set the owning side to null (unless already changed)
+            if ($photo->getSelectionProcess() === $this) {
+                $photo->setSelectionProcess(null);
             }
         }
 

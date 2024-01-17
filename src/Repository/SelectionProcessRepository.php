@@ -21,6 +21,18 @@ class SelectionProcessRepository extends ServiceEntityRepository
         parent::__construct($registry, SelectionProcess::class);
     }
 
+    public function findSelectProcessByClient(int $clientId): array
+    {
+        return $this->createQueryBuilder('sp')
+            ->leftJoin('sp.thematics', 't')
+            ->leftJoin('sp.client', 'c')
+            ->leftJoin('t.groups', 'g')
+            ->leftJoin('sp.photos', 'ph')
+            ->where('c.id = :cId')
+            ->setParameter('cId', $clientId)
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return SelectionProcess[] Returns an array of SelectionProcess objects
     //     */

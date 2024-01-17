@@ -22,17 +22,25 @@ class SelectionProcessController extends AbstractController
 {
     public function __construct(
         readonly private TimingTaskService $timingTask,
-        readonly private MessageGeneratorService $messageGenerator
+        readonly private MessageGeneratorService $messageGenerator,
+        readonly private EntityManagerInterface $entity
     )
     {
     }
 
-    #[Route('/', name: 'app_selection_process')]
-    public function index(SelectionProcessRepository $processRepo): Response
+    #[Route('/{slug}/{id}', name: 'app_selection_process', requirements: ['id' => '\d+'])]
+    public function index(string $slug, SelectionProcess $id): Response
     {
+        $client = $this->entity->getRepository(Client::class)->findOneBy(['slug' => $slug]);
+        $theme = [];
+        foreach ($id->getThematics() as $th => $thematic){
+            $theme[$th] = $thematic;
+        }
         return $this->render('selection_process/index.html.twig', [
-            'title' => 'Parcours de selection',
-            'process' => $processRepo->findAll()
+            'title' => 'Parcours '. $id->getName(),
+            'parcour' => $id,
+            'client' => $client,
+            'theme' => $theme
         ]);
     }
 

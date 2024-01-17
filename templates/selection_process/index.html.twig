@@ -6,13 +6,36 @@
 {% endblock %}
 {% block body %}
 <section class="relative max-w-7xl mx-auto bg-white py-2 iphone:py-6 xs:py-4 lg:py-14 min-h-screen">
-	<h1 class="h2">{{ title }}</h1>
-	<div>
-		{% for allProcess in process %}
-			<p>{{ allProcess.name }}</p>
-		{% else %}
-			<div class="fonts-size py-10">Pour le moment, vous n'avez pas de parcours en cours, retourner sur votre <a href="{{ path('app_user', {'id': app.user.id}) }}" class="fonts-size underline underline-offset-1 hover:underline-offset-4">profile</a> afin de créer un parcour</div>
-		{% endfor %}
+	<h1 class="h2 my-10">{{ title }}</h1>
+	<div class="p-6 lg:p-0">
+		<a href="{{ path('app_user', {'id': client.id}) }}" class="btn-primary mx-0 my-14 max-w-xs">Retour profile</a>
+		
+		<h3 class="h6">Theme du parcour de séléction : {{ theme[0].name }}</h3>
+		<p class="fonts-size my-10">{{ theme[0].description }}</p>
+		<div class="grid grid-cols-1 iphone:grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 my-8">
+			{% for group in theme[0].groups %}
+				<ul class="border border-1 border-gray-800 rounded-md ">
+					<li>
+						<p class="text-black bold bg-gray-100 p-2 rounded-t-md">{{ group.name }}</p>
+						<ul class="p-2">
+							{% for binome in group.binomials %}
+								<li></li>
+							{% else %}
+								<p>Pas de binôme inscrit</p>
+							{% endfor %}
+						</ul>
+					</li>
+				</ul>
+			{% endfor %}
+		</div>
+		<div>
+			<p>photo</p>
+			{% for photos in parcour.photos %}
+				{{ dump(photos) }}
+			{% else %}
+				<p>Pas de photo pour le moment</p>
+			{% endfor %}
+		</div>
 	</div>
 </section>
 {% endblock %}

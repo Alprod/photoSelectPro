@@ -25,6 +25,9 @@ class Photo
     #[ORM\ManyToMany(targetEntity: BinomialPreSelection::class, mappedBy: 'photos')]
     private Collection $binomialPreSelections;
 
+    #[ORM\ManyToOne(inversedBy: 'photos')]
+    private ?SelectionProcess $selectionProcess = null;
+
     public function __construct()
     {
         $this->binomialPreSelections = new ArrayCollection();
@@ -89,6 +92,18 @@ class Photo
         if ($this->binomialPreSelections->removeElement($binomialPreSelection)) {
             $binomialPreSelection->removePhoto($this);
         }
+
+        return $this;
+    }
+
+    public function getSelectionProcess(): ?SelectionProcess
+    {
+        return $this->selectionProcess;
+    }
+
+    public function setSelectionProcess(?SelectionProcess $selectionProcess): static
+    {
+        $this->selectionProcess = $selectionProcess;
 
         return $this;
     }

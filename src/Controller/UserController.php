@@ -6,6 +6,7 @@ use App\Entity\Identity;
 use App\Entity\User;
 use App\Form\ChangePasswordType;
 use App\Form\IdentityUserType;
+use App\Repository\ClientRepository;
 use App\Repository\UserRepository;
 use App\Service\MessageGeneratorService;
 use App\Service\TimingTaskService;
@@ -17,7 +18,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class UserController extends AbstractController
 {
@@ -32,7 +33,10 @@ class UserController extends AbstractController
      * @throws RandomException
      */
     #[Route('/profile/{id}', name: 'app_user')]
-    public function index(User $id, Request $request, AvatarUploadFile $avatarUploadFile): Response
+    public function index(User $id,
+        Request $request,
+        AvatarUploadFile $avatarUploadFile,
+        ClientRepository $clientRepo): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Veuillez vous connectez si vous souhaitez avoir accès au contenu');
         $repo = $this->entity->getRepository(Identity::class);
@@ -62,9 +66,10 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_user', ['id' => $id->getId()]);
         }
 
+
         return $this->render('user/index.html.twig', [
             'user'         => $id,
-            'identityForm' => $identityForm,
+            'identityForm' => $identityForm->createView(),
         ]);
     }
 
@@ -90,7 +95,7 @@ class UserController extends AbstractController
 
         return $this->render('user/update_password.html.twig', [
             'user' => $user,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 }
