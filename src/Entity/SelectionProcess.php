@@ -25,7 +25,7 @@ class SelectionProcess
     #[ORM\ManyToOne(inversedBy: 'selectionProcesses')]
     private ?Client $client = null;
 
-    #[ORM\OneToMany(mappedBy: 'selectionProcess', targetEntity: Thematic::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'selectionProcess', targetEntity: Thematic::class, cascade: ['persist', 'remove'])]
     private Collection $thematics;
 
     #[ORM\OneToMany(mappedBy: 'selectionProcess', targetEntity: Photo::class)]

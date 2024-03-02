@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\SelectionProcess;
+use App\EventSubscriber\UpdateDataSelectProcessFormSubscriber;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -18,6 +20,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SelectionProcessType extends AbstractType
 {
+    public function __construct(readonly private EntityManagerInterface $em)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -27,6 +33,7 @@ class SelectionProcessType extends AbstractType
             ->add('startDate', DateTimeType::class, [
                 'label' => 'Date de debut',
             ])
+            ->addEventSubscriber(new UpdateDataSelectProcessFormSubscriber($this->em))
             ->add('endDate', DateTimeType::class, [
                 'label' => 'Date de fin',
                 'constraints' => [

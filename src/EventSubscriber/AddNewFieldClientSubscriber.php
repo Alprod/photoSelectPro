@@ -2,10 +2,20 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\Client;
+use App\Entity\Identity;
+use App\Entity\User;
+use App\Service\EmailService;
+use App\Service\TimingTaskService;
+use App\Service\ToolsService;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -16,7 +26,9 @@ class AddNewFieldClientSubscriber implements EventSubscriberInterface
      */
     #[\Override] public static function getSubscribedEvents(): array
     {
-        return [FormEvents::PRE_SUBMIT => 'onPreSubmit'];
+        return [
+            FormEvents::PRE_SUBMIT => 'onPreSubmit',
+        ];
     }
 
     public function onPreSubmit(FormEvent $event): void

@@ -8,7 +8,7 @@
 <section class="relative max-w-7xl mx-auto bg-white py-2 iphone:py-6 xs:py-4 lg:py-14 min-h-screen">
 	<h1 class="h2 my-10">{{ title }}</h1>
 	<div class="p-6 lg:p-0">
-		<a href="{{ path('app_user', {'id': client.id}) }}" class="btn-primary mx-0 my-14 max-w-xs">Retour profile</a>
+		<a href="{{ path('app_user', {'id': app.user.id}) }}" class="btn-primary mx-0 my-14 max-w-xs">Retour profile</a>
 		
 		<h3 class="h6">Theme du parcour de séléction : {{ theme[0].name }}</h3>
 		<p class="fonts-size my-10">{{ theme[0].description }}</p>

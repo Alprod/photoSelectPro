@@ -26,7 +26,7 @@ class MessageGeneratorService
 
     public function getMessageErrorEmailVerified(): string
     {
-        return "Nous nous excusons, mais nous n'avons pas réussi à vous localiser. Veuillez vérifier votre boite mail afin de validé votre email et réessayer.";
+        return "Nous nous excusons pour tout inconvénient, cependant, votre adresse e-mail n'ayant pas été vérifiée, veuillez consulter votre boîte de réception afin de confirmer votre adresse e-mail et réessayer.";
     }
 
     public function getMessageFailure(): string

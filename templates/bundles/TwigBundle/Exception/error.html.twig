@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+{% block header %}{% endblock %}
+{% block alert%}{% endblock %}
+{% set message = "Désolé mais une erreur vient de se produire nous faisont notre possible pour la réparer"%}
+{% block body %}
+	{% include 'includes/errorPage.html.twig' with {'code': status_code, 'status': status_text, 'message': message} %}
+{% endblock %}
+{% block footer %}{% endblock %}

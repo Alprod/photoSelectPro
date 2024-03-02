@@ -34,7 +34,7 @@
 													<img class="h-16 w-16 rounded-full sm:hidden" src="{{ asset('images/uploads/avatars/' ~ user.identity.avatarFilename) }}" alt="avatar image" />
 												{% endif %}
 												<h1 class="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:leading-9 sm:truncate">
-													Bienvenue à toi, {{ user.identity.firstname ~ ' ' ~ user.identity.lastname }}
+													Bienvenue à toi, {{ user.identity.firstname|capitalize ~ ' ' ~ user.identity.lastname|capitalize }}
 												</h1>
 												{% if is_granted('ROLE_CLIENT') %}
 													<span class="text-yellow-500 pl-3">
@@ -110,9 +110,11 @@
 						<h1 class="text-xl font-semibold text-gray-900">Users</h1>
 						<p class="mt-2 text-sm text-gray-700">A list of all the users in your account including their name, title, email and role.</p>
 					</div>
+					{% if is_granted('ROLE_CLIENT') %}
 					<div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
 						<a href="{{ path('app_new_selection_process', {'slug': user.client.slug}) }}" type="button" class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">Créer un parcour</a>
 					</div>
+					{% endif %}
 				</div>
 				<div class="mt-8 flex flex-col">
 					<div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -144,7 +146,14 @@
 													<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ theme.groups|length }}</td>
 												{% endfor %}
 												<td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-													<a href="{{ path('app_selection_process', { 'slug': user.client.slug, 'id': process.id }) }}" class="text-indigo-600 hover:text-indigo-900">Voir<span class="sr-only">{{ process.id }}</span></a>
+													<a href="{{ path('app_selection_process', { 'slug': user.client.slug, 'id': process.id }) }}"
+													   class="text-indigo-600 hover:text-indigo-900">Voir<span class="sr-only">{{ process.id }}</span>
+													</a>
+													{% if is_granted('ROLE_CLIENT') %}
+													<a href="{{ path('app_edit_selection_process', { 'slug': user.client.slug, 'idParcours': process.id }) }}"
+													   class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">{{ process.id }}</span>
+													</a>
+													{% endif %}
 												</td>
 										</tr>
 									{% endfor %}

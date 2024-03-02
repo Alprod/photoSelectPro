@@ -6,6 +6,7 @@ use App\Entity\Client;
 use App\Entity\Group;
 use App\Entity\SelectionProcess;
 use App\Entity\Thematic;
+use App\Entity\User;
 use App\Form\SelectionProcessType;
 use App\Repository\ClientRepository;
 use App\Repository\SelectionProcessRepository;
@@ -15,7 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/selection')]
 class SelectionProcessController extends AbstractController
@@ -31,7 +32,9 @@ class SelectionProcessController extends AbstractController
     #[Route('/{slug}/{id}', name: 'app_selection_process', requirements: ['id' => '\d+'])]
     public function index(string $slug, SelectionProcess $id): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $client = $this->entity->getRepository(Client::class)->findOneBy(['slug' => $slug]);
+
         $theme = [];
         foreach ($id->getThematics() as $th => $thematic){
             $theme[$th] = $thematic;
@@ -45,34 +48,52 @@ class SelectionProcessController extends AbstractController
     }
 
     #[Route('/{slug}/new-parcours', name: 'app_new_selection_process')]
-    public function newSelectionProcess(string $slug, Request $request, ClientRepository $clientRepo): Response
+    #[Route('/{slug}/edit-parcours/{idParcours<\d+>}', name: 'app_edit_selection_process')]
+    public function newSelectionProcess(
+        string $slug,
+        Request $request,
+        ClientRepository $clientRepo,
+        SelectionProcess $idParcours = null,
+    ): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_CLIENT');
         $user = $this->getUser();
-
         $client = $clientRepo->findOneBy(['slug' => $slug]);
 
-        $selectProcess = new SelectionProcess();
-        $thematic = new Thematic();
         if(!$client && !$user) {
-            $this->addFlash('danger', $this->messageGenerator->getMessageFailureLogin('Nous ne parvions pas à vous trouver'));
+            $this->addFlash('danger', $this->messageGenerator->getMessageFailureLogin('Nous ne parvenons pas à vous trouver'));
             return $this->redirectToRoute('app_login');
         }
+        if(!$idParcours){
+            $idParcours = new SelectionProcess();
+        }
+        $thematic = $this->entity->getRepository(Thematic::class)->findOneBy(['selectionProcess'=> $idParcours]);
 
-        $formSelectProcess = $this->createForm(SelectionProcessType::class, $selectProcess);
+        if(!$thematic){
+            $thematic = new Thematic();
+        }
+
+        $formSelectProcess = $this->createForm(SelectionProcessType::class, $idParcours);
+
         $formSelectProcess->handleRequest($request);
 
         if($formSelectProcess->isSubmitted() && $formSelectProcess->isValid()){
+
             $inputThematicName = $formSelectProcess->get('thematic')->getData();
             $inputThematicDescription = $formSelectProcess->get('description')->getData();
             $inputNumGroups = $formSelectProcess->get('groups')->getData();
             $inputNumMAxPersByGroups = $formSelectProcess->get('maxPersonByGroup')->getData();
+
             $thematic->setName($inputThematicName)
-                ->setSelectionProcess($selectProcess)
+                ->setSelectionProcess($idParcours)
                 ->setDescription($inputThematicDescription);
 
-            for($i = 1; $i <= $inputNumGroups; $i++){
-                $groups = new Group();
+            for($i = 0; $i <= $inputNumGroups; $i++){
+
+                $groups = $this->entity->getRepository(Group::class)->findOneBy(['thematic' => $thematic]);
+                if(!$groups){
+                    $groups = new Group();
+                }
                 $name = 'Groupe '.$i;
                 $groups->setName($name)
                     ->setMaxPersonByGroup($inputNumMAxPersByGroups)
@@ -80,10 +101,10 @@ class SelectionProcessController extends AbstractController
                 $thematic->addGroup($groups);
             }
 
-            $selectProcess->setClient($client)
+            $idParcours->setClient($client)
                 ->addThematic($thematic);
 
-            $this->timingTask->timingEntityManager('Created new parcours',SelectionProcess::class,$selectProcess);
+            $this->timingTask->timingEntityManager('Created new parcours',SelectionProcess::class,$idParcours);
             $this->addFlash('success', 'Votre parcours vient d\'être créé');
 
             return $this->redirectToRoute('app_user', ['id' => $user->getId()]);

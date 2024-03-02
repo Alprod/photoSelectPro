@@ -1,0 +1,21 @@
+<div class="h-screen" style="
+  background-image: url({{ asset('images/site-images/jeppe-hove-jensen.jpg') }});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  ">
+	<div class="max-w-7xl min-h-full mx-auto flex items-center px-4 py-16 text-center sm:px-6 sm:py-24 lg:px-8 lg:py-4">
+		<div class="max-w-5xl mx-auto">
+			<h2 class="text-5xl font-extrabold text-gray-200 text-opacity-50 uppercase tracking-wide">{{ code }}</h2>
+			<h1 class="mt-2 text-4xl font-extrabold text-gray-200 tracking-tight sm:text-5xl">{{ status }}</h1>
+			<p class="mt-2 text-md text-gray-100">{{ message }}</p>
+			<div class="mt-6">
+				<a href="{{ path('app_home') }}" class="inline-flex items-center px-4 py-2 border border-transparent
+				text-sm font-medium rounded-md text-black text-opacity-75 bg-white bg-opacity-85 sm:bg-opacity-25
+				sm:hover:bg-opacity-50">Accueil<span aria-hidden="true"> &rarr;</span></a>
+			</div>
+		</div>
+	</div>
+</div>
+

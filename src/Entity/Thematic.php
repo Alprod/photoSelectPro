@@ -20,10 +20,10 @@ class Thematic
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\ManyToOne(inversedBy: 'thematics')]
+    #[ORM\ManyToOne(cascade: ['remove', 'persist'], inversedBy: 'thematics')]
     private ?SelectionProcess $selectionProcess = null;
 
-    #[ORM\OneToMany(mappedBy: 'thematic', targetEntity: Group::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'thematic', targetEntity: Group::class, cascade: ['persist', 'remove'])]
     private Collection $groups;
 
     public function __construct()

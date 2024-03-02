@@ -14,15 +14,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/client')]
 class ClientController extends AbstractController
 {
-    public function __construct(
-        readonly private ToolsService $toolsService,
-        readonly private TimingTaskService $timingTaskService
-    ) {
+    public function __construct( 
+        readonly private ToolsService $toolsService, 
+        readonly private TimingTaskService $timingTaskService,
+        readonly private UserPasswordHasherInterface $passwordHasher,
+        readonly private EmailService $emailService ) {
     }
 
     #[Route('/', name: 'app_client')]
@@ -36,55 +37,27 @@ class ClientController extends AbstractController
     #[Route('/register_client', name: 'app_register_client')]
     public function registerClient(
         Request $request,
-        UserPasswordHasherInterface $passwordHasher,
         UserRepository $userRepo,
-        EmailService $emailService
     ): Response {
         $client = new Client();
-        $user = new User();
+        $newUser = new User();
         $identity = new Identity();
 
         $form = $this->createForm(ClientType::class, $client);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $nameClient = $form->get('name')->getData();
             $emailClient = $form->get('contactEmail')->getData();
-            $usernameClient = $form->get('contactName')->getData();
+            $plainPassword = $form->get('plainPassword')->getData();
+
             $userExist = $userRepo->findOneBy(['email' => $emailClient]);
-            $identityClient = explode(' ', $usernameClient);
 
             if ($userExist) {
                 $this->addFlash('danger', 'Cette email '.$emailClient.' existe déjà.');
-
                 return $this->redirectToRoute('app_register_client');
             }
 
-            $refNumber = $this->toolsService->getGeneratorRefNumber($nameClient);
-            $slug = $this->toolsService->getGeneratorSlugger($nameClient);
-
-            $client
-                ->setRefNumber($refNumber)
-                ->setSlug($slug);
-            $this->timingTaskService->timingEntityManager('Register client', Client::class, $client);
-
-            $user->setEmail($emailClient)
-                ->setRoles(['ROLE_CLIENT'])
-                ->setClient($client)
-                ->setPassword($passwordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                ));
-            $this->timingTaskService->timingEntityManager('Register user by client', User::class, $user);
-
-            $identity
-                ->setUserIdentity($user)
-                ->setFirstname($identityClient[1])
-                ->setLastname($identityClient[0]);
-
-            $this->timingTaskService->timingEntityManager('Add identity by client', Identity::class, $identity);
-
-            $emailService->emailVerifierService($user);
+            $user = $this->regiseterEntityClient($client, $newUser, $identity, $plainPassword);
 
             return $this->redirectToRoute('app_render_verif_email', ['email' => $user->getEmail()]);
         }
@@ -92,5 +65,34 @@ class ClientController extends AbstractController
         return $this->render('client/register_client.html.twig', [
             'clientForm' => $form,
         ]);
+    }
+
+    private function regiseterEntityClient(Client $client, User $user, Identity $identity, string $plainPassword): User
+    {
+        $refNumber = $this->toolsService->getGeneratorRefNumber($client->getName());
+        $slug = $this->toolsService->getGeneratorSlugger($client->getName());
+
+        $client->setRefNumber($refNumber)
+                ->setSlug($slug);
+
+        $user->setEmail($client->getContactEmail())
+            ->setRoles(["ROLE_CLIENT"])
+            ->setClient($client)
+            ->setPassword($this->passwordHasher->hashPassword(
+                $user,
+                $plainPassword
+            ));
+        $client->addUser($user);
+        $this->timingTaskService->timingEntityManager('Register new client', Client::class, $client);
+
+        $usernameClient = explode(' ', $client->getContactName());
+        $identity->setUserIdentity($user)
+            ->setFirstname($usernameClient[1])
+            ->setLastname($usernameClient[0]);
+
+        $this->timingTaskService->timingEntityManager('Add identity by client', Identity::class, $identity);
+        $this->emailService->emailVerifierService($user);
+
+        return $user;
     }
 }

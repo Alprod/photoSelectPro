@@ -35,7 +35,7 @@ class Client
     #[ORM\Column(length: 255)]
     private ?string $refNumber = null;
 
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: User::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: User::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $users;
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: SelectionProcess::class)]

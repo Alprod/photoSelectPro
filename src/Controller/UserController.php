@@ -36,7 +36,7 @@ class UserController extends AbstractController
     public function index(User $id,
         Request $request,
         AvatarUploadFile $avatarUploadFile,
-        ClientRepository $clientRepo): Response
+    ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Veuillez vous connectez si vous souhaitez avoir accès au contenu');
         $repo = $this->entity->getRepository(Identity::class);

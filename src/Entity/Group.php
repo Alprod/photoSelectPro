@@ -17,7 +17,7 @@ class Group
     #[ORM\Column(length: 100)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'groups')]
+    #[ORM\ManyToOne(cascade: ['remove', 'persist'],inversedBy: 'groups')]
     private ?Thematic $thematic = null;
 
     #[ORM\OneToMany(mappedBy: 'groupUser', targetEntity: Binomial::class)]
