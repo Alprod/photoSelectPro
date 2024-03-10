@@ -19,8 +19,7 @@ class IdentityUserType extends AbstractType
     public function __construct(
         readonly private SecurityLogger $securityLogger,
         readonly private RequestStack $requestStack
-    ) {
-    }
+    ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

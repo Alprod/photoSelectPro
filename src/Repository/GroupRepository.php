@@ -21,6 +21,18 @@ class GroupRepository extends ServiceEntityRepository
         parent::__construct($registry, Group::class);
     }
 
+    public function findByNameGroupExist(string $value): ?Group
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        $qb->where($qb->expr()->like('LOWER(g.name)', 'LOWER(:val)'))
+            ->setParameter('val', $value);
+
+        return $qb->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     //    /**
     //     * @return Group[] Returns an array of Group objects
     //     */
@@ -33,16 +45,6 @@ class GroupRepository extends ServiceEntityRepository
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Group
-    //    {
-    //        return $this->createQueryBuilder('g')
-    //            ->andWhere('g.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
     //        ;
     //    }
 }

@@ -103,12 +103,13 @@
 				{% endif %}
 			</div>
 		<div class="mx-8 p-4 iphone:p-8">
-			{% if app.user.client.selectionProcesses|length > 0 %}
+			{% if app.user.client.selectionProcesses|length > 0 and app.user.client.selectionProcesses is defined %}
 			<div class="px-4 sm:px-6 lg:px-8">
 				<div class="sm:flex sm:items-center">
 					<div class="sm:flex-auto">
-						<h1 class="text-xl font-semibold text-gray-900">Users</h1>
-						<p class="mt-2 text-sm text-gray-700">A list of all the users in your account including their name, title, email and role.</p>
+						<h1 class="text-xl font-semibold text-gray-900">Vos Parcours</h1>
+						<p class="mt-2 text-sm text-gray-700">Retrouver tous vos parcour ainsi que les details de
+							leur contenu</p>
 					</div>
 					{% if is_granted('ROLE_CLIENT') %}
 					<div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
@@ -145,14 +146,32 @@
 												{% for theme in process.thematics %}
 													<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ theme.groups|length }}</td>
 												{% endfor %}
-												<td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-													<a href="{{ path('app_selection_process', { 'slug': user.client.slug, 'id': process.id }) }}"
-													   class="text-indigo-600 hover:text-indigo-900">Voir<span class="sr-only">{{ process.id }}</span>
+												<td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right
+												text-sm font-medium sm:pr-6 flex flex-row justify-between">
+													<a href="{{ path('app_selection_process', { 'slug': user.client.slug, 'id': process.id }) }}" class="text-indigo-600 hover:text-indigo-900">
+														<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+															<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+															<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+														</svg>
+														
+														<span class="sr-only">{{ process.id }}</span>
 													</a>
 													{% if is_granted('ROLE_CLIENT') %}
-													<a href="{{ path('app_edit_selection_process', { 'slug': user.client.slug, 'idParcours': process.id }) }}"
-													   class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">{{ process.id }}</span>
+													<a href="{{ path('app_edit_selection_process', { 'slug': user
+													.client.slug, 'idParcours': process.id }) }}" class="text-green-600
+													hover:text-green-900">
+														<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+															<path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+														</svg>
+														<span class="sr-only">{{ process.id }}</span>
 													</a>
+													{% include 'includes/form/deletedForm.html.twig' with
+														{
+															routeName:'app_delete_selection_process',
+															idItem: process.id,
+															deletItem : 'deleted_process'
+														}
+													%}
 													{% endif %}
 												</td>
 										</tr>

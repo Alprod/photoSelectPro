@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Client;
 use App\Entity\Identity;
 use App\Entity\User;
+use App\Enum\RolesEnum;
 use App\Form\ClientType;
 use App\Repository\UserRepository;
 use App\Service\EmailService;

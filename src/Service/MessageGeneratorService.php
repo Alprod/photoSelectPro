@@ -89,4 +89,9 @@ class MessageGeneratorService
         return 'Bonne nouvelle : un email important vient de partir a cette adresse '.$email.". C'est au sujet de la mise à jour de ton compte. 🚀 <br/>
                 ⏳ Regarde vite ! Consulte ta boîte de réception pour tous les détails.";
     }
+
+    public function getMessageAddNewGroup($groupName): string
+    {
+        return $groupName." à été ajouter";
+    }
 }

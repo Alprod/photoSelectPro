@@ -7,6 +7,8 @@ use App\Trait\ResourceId;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Mime\Message;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
 #[ORM\Table(name: '`group`')]
@@ -14,6 +16,7 @@ class Group
 {
     use ResourceId;
 
+    #[Assert\NotBlank(message: 'Veuillez indiquer un nom de groupe')]
     #[ORM\Column(length: 100)]
     private ?string $name = null;
 
@@ -26,6 +29,7 @@ class Group
     #[ORM\OneToMany(mappedBy: 'groupFinal', targetEntity: GroupFinalSelection::class)]
     private Collection $groupFinalSelections;
 
+    #[Assert\GreaterThan(2)]
     #[ORM\Column]
     private ?int $maxPersonByGroup = 0;
 

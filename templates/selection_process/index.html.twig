@@ -5,17 +5,19 @@
 	{% include 'includes/header/_header.html.twig' %}
 {% endblock %}
 {% block body %}
-<section class="relative max-w-7xl mx-auto bg-white py-2 iphone:py-6 xs:py-4 lg:py-14 min-h-screen">
+<section class="relative max-w-7xl mx-auto bg-white py-2 iphone:py-4 xs:py-6 md:py-8 lg:py-14 min-h-screen">
 	<h1 class="h2 my-10">{{ title }}</h1>
-	<div class="p-6 lg:p-0">
+	<div class="p-0 lg:p-6">
 		<a href="{{ path('app_user', {'id': app.user.id}) }}" class="btn-primary mx-0 my-14 max-w-xs">Retour profile</a>
 		
 		<h3 class="h6">Theme du parcour de séléction : {{ theme[0].name }}</h3>
-		<p class="fonts-size my-10">{{ theme[0].description }}</p>
-		<div class="grid grid-cols-1 iphone:grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 my-8">
+		<p class="fonts-size my-10">
+			<span class="font-bold block underline">Description: </span>
+			{{ theme[0].description }}
+		</p>
+		<div class="grid grid-cols-1 px-4 iphone:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 my-8">
 			{% for group in theme[0].groups %}
-				<ul class="border border-1 border-gray-800 rounded-md ">
-					<li>
+					<div class="border border-1 border-gray-800 rounded-md">
 						<p class="text-black bold bg-gray-100 p-2 rounded-t-md">{{ group.name }}</p>
 						<ul class="p-2">
 							{% for binome in group.binomials %}
@@ -24,12 +26,31 @@
 								<p>Pas de binôme inscrit</p>
 							{% endfor %}
 						</ul>
-					</li>
-				</ul>
+					</div>
+			{% else %}
+				<div class="flex-auto">Pas de groupe crée pour le moment</div>
 			{% endfor %}
+
+			<div class="flex items-center text-sm bg-gray-400/40 text-gray-100 font-medium rounded-md capitalize
+			sm:mr-6 hover:bg-gray-500/45 hover:text-gray-50">
+				<a href="{{ path('app_new_group', { process: parcour.id }) }}" class="m-auto">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+						stroke="currentColor" class="w-24 h-24 m-auto">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+					</svg>
+				</a>
+			</div>
 		</div>
-		<div>
-			<p>photo</p>
+		<h2>Photos du parcours</h2>
+		<div class="grid grid-cols-1 px-4 iphone:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 my-8">
+			<div class="flex items-center text-sm bg-gray-400/40 text-gray-100 font-medium rounded-md capitalize
+			sm:mr-6 hover:bg-gray-500/45 hover:text-gray-50">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+				     stroke="currentColor" class="w-24 h-24 m-auto">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+				</svg>
+			
+			</div>
 			{% for photos in parcour.photos %}
 				{{ dump(photos) }}
 			{% else %}

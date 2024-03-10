@@ -3,13 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Client;
-use App\Entity\Group;
 use App\Entity\SelectionProcess;
 use App\Entity\Thematic;
-use App\Entity\User;
+use App\Enum\RolesEnum;
 use App\Form\SelectionProcessType;
 use App\Repository\ClientRepository;
-use App\Repository\SelectionProcessRepository;
 use App\Service\MessageGeneratorService;
 use App\Service\TimingTaskService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,19 +27,20 @@ class SelectionProcessController extends AbstractController
     {
     }
 
-    #[Route('/{slug}/{id}', name: 'app_selection_process', requirements: ['id' => '\d+'])]
-    public function index(string $slug, SelectionProcess $id): Response
+    #[Route('/parcours/show/{slug}/{id}', name: 'app_selection_process', requirements: ['id' => '\d+'])]
+    public function index(string $slug, $id): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted("IS_AUTHENTICATED_FULLY");
         $client = $this->entity->getRepository(Client::class)->findOneBy(['slug' => $slug]);
+        $selectionProcess = $this->entity->getRepository(SelectionProcess::class)->findOneBy(['id' => $id ]);
 
         $theme = [];
-        foreach ($id->getThematics() as $th => $thematic){
+        foreach ($selectionProcess->getThematics() as $th => $thematic){
             $theme[$th] = $thematic;
         }
         return $this->render('selection_process/index.html.twig', [
-            'title' => 'Parcours '. $id->getName(),
-            'parcour' => $id,
+            'title' => $selectionProcess->getName(),
+            'parcour' => $selectionProcess,
             'client' => $client,
             'theme' => $theme
         ]);
@@ -56,9 +55,10 @@ class SelectionProcessController extends AbstractController
         SelectionProcess $idParcours = null,
     ): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_CLIENT');
+        $this->denyAccessUnlessGranted("ROLE_CLIENT");
         $user = $this->getUser();
         $client = $clientRepo->findOneBy(['slug' => $slug]);
+        $message = "Votre parcour a été mise a jour";
 
         if(!$client && !$user) {
             $this->addFlash('danger', $this->messageGenerator->getMessageFailureLogin('Nous ne parvenons pas à vous trouver'));
@@ -66,6 +66,7 @@ class SelectionProcessController extends AbstractController
         }
         if(!$idParcours){
             $idParcours = new SelectionProcess();
+            $message = "Votre parcour a été créé";
         }
         $thematic = $this->entity->getRepository(Thematic::class)->findOneBy(['selectionProcess'=> $idParcours]);
 
@@ -81,31 +82,16 @@ class SelectionProcessController extends AbstractController
 
             $inputThematicName = $formSelectProcess->get('thematic')->getData();
             $inputThematicDescription = $formSelectProcess->get('description')->getData();
-            $inputNumGroups = $formSelectProcess->get('groups')->getData();
-            $inputNumMAxPersByGroups = $formSelectProcess->get('maxPersonByGroup')->getData();
 
             $thematic->setName($inputThematicName)
                 ->setSelectionProcess($idParcours)
                 ->setDescription($inputThematicDescription);
 
-            for($i = 0; $i <= $inputNumGroups; $i++){
-
-                $groups = $this->entity->getRepository(Group::class)->findOneBy(['thematic' => $thematic]);
-                if(!$groups){
-                    $groups = new Group();
-                }
-                $name = 'Groupe '.$i;
-                $groups->setName($name)
-                    ->setMaxPersonByGroup($inputNumMAxPersByGroups)
-                    ->setThematic($thematic);
-                $thematic->addGroup($groups);
-            }
-
             $idParcours->setClient($client)
                 ->addThematic($thematic);
 
             $this->timingTask->timingEntityManager('Created new parcours',SelectionProcess::class,$idParcours);
-            $this->addFlash('success', 'Votre parcours vient d\'être créé');
+            $this->addFlash('success', $message);
 
             return $this->redirectToRoute('app_user', ['id' => $user->getId()]);
 
@@ -114,5 +100,22 @@ class SelectionProcessController extends AbstractController
         return $this->render('selection_process/new_process.html.twig', [
             'formSelectProcess' => $formSelectProcess
         ]);
+    }
+
+    #[Route('/delete/{id}', name: 'app_delete_selection_process')]
+    public function deletedSelectionProcess(SelectionProcess $id, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted("ROLE_CLIENT");
+
+        $submitToken = $request->query->get(('token'));
+        if ($this->isCsrfTokenValid('deleted_process', $submitToken)){
+            $this->entity->remove($id);
+            $this->entity->flush();
+            $this->addFlash('success','Parcours supprimer');
+
+            return $this->redirectToRoute('app_user',
+                ['id' => $this->getUser()->getId()]);
+        }
+
     }
 }

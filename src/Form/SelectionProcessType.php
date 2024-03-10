@@ -7,15 +7,11 @@ use App\EventSubscriber\UpdateDataSelectProcessFormSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
-use Symfony\Component\Validator\Constraints\LessThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SelectionProcessType extends AbstractType
@@ -60,28 +56,6 @@ class SelectionProcessType extends AbstractType
                 'attr' => ['rows' => 10],
                 'help' => 'Une petite description de la thematique donnerai le ton au parcours de sélection',
 
-            ])
-            ->add('groups', IntegerType::class, [
-                'label' => 'Nombre de groupe',
-                'required' => false,
-                'mapped' => false,
-                'help' => 'Combien de groupe sera composé le parcour de sélection, afin que les binômes puissent s\'y répartir',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Pour la suite du parcours il me faut le nombre totale de groupe'
-                    ])
-                ]
-            ])
-            ->add('maxPersonByGroup', NumberType::class, [
-                'label' => 'Nombre max par groupe',
-                'required' => false,
-                'mapped' => false,
-                'help' => 'Indique un nombre maximale de binômes|participants dans un groupe afin d\'éviter une surcharge des groupes',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Pour la suite du parcours il me faut le nombre totale de binômes|participants par groupe'
-                    ])
-                ]
             ])
         ;
     }

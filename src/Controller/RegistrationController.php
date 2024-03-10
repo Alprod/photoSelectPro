@@ -26,8 +26,7 @@ class RegistrationController extends AbstractController
         readonly private EmailVerifier $emailVerifier,
         readonly private SecurityLogger $securityLogger,
         readonly private MessageGeneratorService $messageGenerator
-    ) {
-    }
+    ){}
 
     /**
      * Enregistrement d'un utilisateur seulement s'il détient le numéro code client.

@@ -12,8 +12,7 @@ class TimingTaskService
         readonly private Stopwatch $stopwatch,
         readonly private EntityManagerInterface $entityManager,
         readonly private TimingLogger $timingLogger
-    ) {
-    }
+    ) {}
 
     /**
      * Visuel en log du temps de sauvgarde en BDD.

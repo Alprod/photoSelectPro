@@ -7,6 +7,7 @@ use App\Trait\ResourceId;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SelectionProcessRepository::class)]
 class SelectionProcess
@@ -16,6 +17,10 @@ class SelectionProcess
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Assert\GreaterThanOrEqual(
+        value: 'today',
+        message: 'Attention indiquer une date supérieur ou celle d\'aujourd\'hui'
+        )]
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $startDate = null;
 
