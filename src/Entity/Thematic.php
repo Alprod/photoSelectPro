@@ -23,7 +23,7 @@ class Thematic
     #[ORM\ManyToOne(cascade: ['remove', 'persist'], inversedBy: 'thematics')]
     private ?SelectionProcess $selectionProcess = null;
 
-    #[ORM\OneToMany(mappedBy: 'thematic', targetEntity: Group::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'thematic', targetEntity: Group::class, cascade: ['persist'])]
     private Collection $groups;
 
     public function __construct()

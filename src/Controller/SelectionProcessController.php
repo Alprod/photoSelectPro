@@ -114,7 +114,7 @@ class SelectionProcessController extends AbstractController
             $this->addFlash('success','Parcours supprimer');
 
             return $this->redirectToRoute('app_user',
-                ['id' => $this->getUser()->getId()]);
+                ['id' => $this->getUser()?->getId()]);
         }
 
     }

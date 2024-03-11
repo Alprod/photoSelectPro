@@ -7,7 +7,9 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 readonly class ToolsService
 {
-    public function __construct(private SluggerInterface $slugger)
+    public function __construct(
+        private SluggerInterface $slugger,
+        )
     {
     }
 
